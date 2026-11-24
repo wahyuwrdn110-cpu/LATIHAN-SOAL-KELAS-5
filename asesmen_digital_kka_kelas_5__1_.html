@@ -1,0 +1,2346 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asesmen Digital: Koding & Kecerdasan Artifisial Kelas 5</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome untuk Ikon Teknologi -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        cyber: {
+                            bg: '#090d16',
+                            surface: '#0f172a',
+                            card: '#131c31',
+                            cyan: '#06b6d4',
+                            blue: '#3b82f6',
+                            violet: '#8b5cf6',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            rose: '#f43f5e'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        body {
+            background-color: #090d16;
+            color: #f8fafc;
+            background-image:
+                radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.14), transparent 38%),
+                radial-gradient(circle at 85% 20%, rgba(139, 92, 246, 0.14), transparent 40%),
+                radial-gradient(circle at 50% 90%, rgba(59, 130, 246, 0.10), transparent 45%);
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Latar Langit Bintang & Orbit Astronot */
+        .space-stars {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                radial-gradient(1.5px 1.5px at 12% 18%, rgba(255, 255, 255, 0.75), transparent),
+                radial-gradient(1px 1px at 28% 64%, rgba(125, 211, 252, 0.65), transparent),
+                radial-gradient(2px 2px at 45% 24%, rgba(255, 255, 255, 0.7), transparent),
+                radial-gradient(1px 1px at 67% 14%, rgba(196, 181, 253, 0.7), transparent),
+                radial-gradient(1.5px 1.5px at 78% 58%, rgba(255, 255, 255, 0.8), transparent),
+                radial-gradient(1px 1px at 91% 32%, rgba(103, 232, 249, 0.65), transparent),
+                radial-gradient(1.5px 1.5px at 35% 84%, rgba(255, 255, 255, 0.6), transparent),
+                radial-gradient(1px 1px at 84% 86%, rgba(221, 214, 254, 0.65), transparent);
+        }
+
+        .glass-panel {
+            background: rgba(19, 28, 49, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+        }
+
+        /* 3D Card Flip Animation untuk Pemilihan Misi */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-style: preserve-3d;
+        }
+        .card-flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.25rem;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Animasi Kocok & Bertukar Posisi Kartu Misi Otomatis */
+        @keyframes orbitSwapLeft {
+            0%   { transform: translate(0, 0) rotate(0deg) scale(1); z-index: 10; }
+            25%  { transform: translate(105%, -14px) rotate(6deg) scale(1.04); z-index: 20; box-shadow: 0 0 28px rgba(6, 182, 212, 0.45); }
+            50%  { transform: translate(210%, 0) rotate(-5deg) scale(0.98); z-index: 10; }
+            75%  { transform: translate(105%, 14px) rotate(4deg) scale(1.03); z-index: 15; box-shadow: 0 0 28px rgba(139, 92, 246, 0.45); }
+            100% { transform: translate(0, 0) rotate(0deg) scale(1); z-index: 10; }
+        }
+        @keyframes orbitSwapCenter {
+            0%   { transform: translate(0, 0) rotate(0deg) scale(1.02); z-index: 20; }
+            25%  { transform: translate(-105%, 14px) rotate(-6deg) scale(0.97); z-index: 10; }
+            50%  { transform: translate(105%, -14px) rotate(6deg) scale(1.05); z-index: 25; box-shadow: 0 0 30px rgba(6, 182, 212, 0.5); }
+            75%  { transform: translate(0, -10px) rotate(-3deg) scale(1.02); z-index: 15; }
+            100% { transform: translate(0, 0) rotate(0deg) scale(1.02); z-index: 20; }
+        }
+        @keyframes orbitSwapRight {
+            0%   { transform: translate(0, 0) rotate(0deg) scale(1); z-index: 10; }
+            25%  { transform: translate(-105%, -14px) rotate(-5deg) scale(1.04); z-index: 15; box-shadow: 0 0 28px rgba(139, 92, 246, 0.45); }
+            50%  { transform: translate(-210%, 0) rotate(6deg) scale(0.98); z-index: 10; }
+            75%  { transform: translate(-105%, 14px) rotate(-4deg) scale(1.03); z-index: 20; box-shadow: 0 0 28px rgba(6, 182, 212, 0.45); }
+            100% { transform: translate(0, 0) rotate(0deg) scale(1); z-index: 10; }
+        }
+        @keyframes mobileShufflePulse {
+            0%, 100% { transform: translateX(0) rotate(0deg) scale(1); }
+            25%      { transform: translateX(-14px) rotate(-3deg) scale(1.02); box-shadow: 0 0 24px rgba(6, 182, 212, 0.4); }
+            50%      { transform: translateX(14px) rotate(3deg) scale(0.98); box-shadow: 0 0 24px rgba(139, 92, 246, 0.4); }
+            75%      { transform: translateX(-8px) rotate(-2deg) scale(1.02); }
+        }
+
+        @media (min-width: 640px) {
+            .shuffle-slot-0 { animation: orbitSwapLeft 1.1s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; }
+            .shuffle-slot-1 { animation: orbitSwapCenter 1.1s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; }
+            .shuffle-slot-2 { animation: orbitSwapRight 1.1s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; }
+        }
+        @media (max-width: 639px) {
+            .shuffle-slot-0, .shuffle-slot-1, .shuffle-slot-2 {
+                animation: mobileShufflePulse 0.65s ease-in-out infinite;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+
+
+        /* ================================================================
+           ASTRA MOBILE + DEEP SPACE VISUAL UPGRADE
+           ================================================================ */
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+        body {
+            background-color: #020611;
+            background-image:
+                radial-gradient(ellipse at 12% 22%, rgba(24, 69, 125, .34), transparent 34%),
+                radial-gradient(ellipse at 82% 12%, rgba(91, 42, 143, .26), transparent 36%),
+                radial-gradient(ellipse at 52% 78%, rgba(5, 48, 91, .24), transparent 42%),
+                linear-gradient(145deg, #020611 0%, #071326 48%, #030713 100%);
+            background-attachment: fixed;
+        }
+        .space-stars {
+            opacity: .9;
+            background-image:
+                radial-gradient(1px 1px at 7% 13%, #fff 98%, transparent),
+                radial-gradient(1.5px 1.5px at 17% 72%, rgba(191,219,254,.9) 98%, transparent),
+                radial-gradient(1px 1px at 31% 38%, #fff 98%, transparent),
+                radial-gradient(2px 2px at 43% 8%, rgba(224,242,254,.9) 98%, transparent),
+                radial-gradient(1px 1px at 57% 66%, #fff 98%, transparent),
+                radial-gradient(1.5px 1.5px at 69% 27%, rgba(196,181,253,.9) 98%, transparent),
+                radial-gradient(1px 1px at 82% 78%, #fff 98%, transparent),
+                radial-gradient(2px 2px at 94% 43%, rgba(186,230,253,.85) 98%, transparent);
+            background-size: 410px 330px;
+        }
+        body::before {
+            content: ""; position: fixed; z-index: 0; pointer-events: none;
+            width: min(48vw, 570px); aspect-ratio: 1; right: -17vw; top: 18vh;
+            border-radius: 50%; opacity: .46;
+            background:
+                radial-gradient(circle at 34% 30%, rgba(255,255,255,.42), transparent 2.2%),
+                radial-gradient(circle at 64% 62%, rgba(2,8,20,.5), transparent 5%),
+                radial-gradient(circle at 43% 56%, rgba(5,17,39,.25), transparent 9%),
+                radial-gradient(circle at 35% 32%, #8fb6d8 0%, #456c9c 19%, #1c3b68 43%, #09172f 67%, #020611 74%);
+            box-shadow: inset -34px -16px 65px rgba(0,0,0,.82), inset 12px 8px 34px rgba(174,218,255,.3), 0 0 70px rgba(57,125,196,.22);
+            filter: saturate(.8);
+        }
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(10, 24, 46, .91), rgba(5, 13, 29, .91));
+            border-color: rgba(125, 181, 235, .22);
+            box-shadow: 0 24px 70px rgba(0,0,0,.56), inset 0 1px 0 rgba(255,255,255,.045);
+        }
+        button, input { touch-action: manipulation; }
+        button { -webkit-tap-highlight-color: transparent; }
+        input { font-size: 16px; }
+        #question-nav-grid button, #options-container button { min-height: 46px; }
+        #options-container button { text-align: left; line-height: 1.45; overflow-wrap: anywhere; }
+        #question-text { overflow-wrap: anywhere; }
+
+        @media (max-width: 640px) {
+            body { min-height: 100svh; }
+            body::before {
+                width: 82vw; right: -43vw; top: 23vh; opacity: .27;
+            }
+            header > div { padding: 10px 12px !important; gap: 8px; }
+            header .w-10 { width: 36px !important; height: 36px !important; flex: 0 0 36px; }
+            header h1 { font-size: 11px !important; letter-spacing: .015em !important; }
+            header p { font-size: 10px !important; line-height: 1.3; }
+            main { display: block !important; padding: 12px !important; }
+            #screen-login, #screen-draw, #screen-quiz, #screen-result { width: 100% !important; max-width: 100% !important; }
+            .glass-panel { border-radius: 20px !important; }
+            #screen-login .glass-panel, #screen-draw .glass-panel { padding: 20px 16px !important; }
+            #screen-login h2 { font-size: 23px !important; }
+            #screen-login .mt-7.grid { grid-template-columns: 1fr !important; gap: 8px !important; }
+            #screen-login .mt-7.grid > div { display: flex; align-items: center; justify-content: space-between; gap: 10px; text-align: left; padding: 10px 12px !important; }
+            #screen-draw .grid.grid-cols-1.sm\:grid-cols-3 { grid-template-columns: 1fr !important; }
+            #screen-draw [id^="card-slot-"] { height: 210px !important; max-width: 100%; }
+            #screen-quiz { padding: 0 !important; }
+            #screen-quiz .glass-panel { padding: 16px 13px !important; }
+            #screen-quiz .flex.flex-wrap { gap: 8px !important; }
+            #question-nav-grid { grid-template-columns: repeat(6, minmax(0, 1fr)) !important; gap: 7px !important; }
+            #question-nav-grid button { min-height: 40px; border-radius: 10px !important; }
+            #options-container { grid-template-columns: 1fr !important; gap: 9px !important; }
+            #options-container button { min-height: 54px; padding: 13px !important; font-size: 14px !important; }
+            #question-text { font-size: 17px !important; line-height: 1.55 !important; }
+            #screen-quiz button, #screen-result button { max-width: 100%; }
+            #screen-quiz .justify-between.items-center { align-items: stretch !important; }
+            #screen-quiz .justify-between.items-center > button { flex: 1 1 auto; }
+            #review-list > div { padding: 14px !important; }
+            #screen-result .glass-panel { padding: 16px 13px !important; }
+            #screen-result .flex.flex-wrap { flex-direction: column; }
+            #screen-result .flex.flex-wrap > button { width: 100%; justify-content: center; }
+            #custom-modal > div { width: calc(100% - 24px) !important; margin: 12px; padding: 18px !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+        }
+
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500 selection:text-slate-950 flex flex-col">
+    <div class="space-stars" aria-hidden="true"></div>
+
+    <!-- Top Navbar Brand -->
+    <header class="w-full border-b border-slate-800/80 bg-slate-950/75 backdrop-blur-md sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-violet-600 flex items-center justify-center shadow-lg shadow-cyan-500/25">
+                    <i class="fa-solid fa-user-astronaut text-white text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm sm:text-base tracking-tight text-white flex items-center gap-2">
+                        ASTRA-KKA MISSION CONTROL
+                        <span class="hidden sm:inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">Kelas 5 • Sem 1</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Koding & Kecerdasan Artifisial • Ekspedisi Ruang Angkasa</p>
+                </div>
+            </div>
+            <div id="header-student-info" class="hidden items-center gap-2 sm:gap-3">
+                <div class="text-right hidden md:block">
+                    <p id="nav-student-name" class="text-xs font-bold text-slate-200">Nama Siswa</p>
+                    <p id="nav-student-absen" class="text-[11px] font-mono text-cyan-400">Absen: 00</p>
+                </div>
+                <span id="nav-paket-badge" class="hidden px-3 py-1 rounded-lg font-mono text-xs font-bold bg-violet-500/20 text-violet-300 border border-violet-500/40">
+                    PAKET -
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 flex items-center justify-center p-4 sm:p-6 relative z-10">
+
+        <!-- ========================================================= -->
+        <!-- HALAMAN 1: LOGIN SISWA (NAMA & NOMOR ABSEN)               -->
+        <!-- ========================================================= -->
+        <section id="screen-login" class="w-full max-w-lg transition-all duration-300">
+            <div class="glass-panel rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+                <!-- Dekorasi Glow -->
+                <div class="absolute -top-24 -right-24 w-48 h-48 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-violet-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="text-center mb-8 relative z-10">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-900/90 border border-cyan-500/30 text-cyan-400 mb-4 shadow-inner animate-float">
+                        <i class="fa-solid fa-user-astronaut text-3xl"></i>
+                    </div>
+                    <div class="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/25 text-cyan-400 text-xs font-mono mb-3">
+                        <i class="fa-solid fa-rocket mr-1"></i>KOKPIT ASTRONOT • MISI KKA
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
+                        Ekspedisi Astronot: <br>
+                        <span class="bg-gradient-to-r from-cyan-400 via-blue-400 to-violet-400 bg-clip-text text-transparent">
+                            Koding & Kecerdasan Artifisial
+                        </span>
+                    </h2>
+                    <p class="text-slate-400 text-sm mt-2">
+                        SD/MI Kelas 5 Semester Gasal • 30 Tantangan Pilihan Ganda
+                    </p>
+                </div>
+
+                <form id="login-form" class="space-y-5 relative z-10" novalidate>
+                    <div>
+                        <label for="input-nama" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                            <i class="fa-solid fa-user-astronaut text-cyan-400 mr-1.5"></i>Nama Lengkap Siswa
+                        </label>
+                        <input type="text" id="input-nama" required autocomplete="off"
+                            placeholder="Contoh: Ahmad Alif Pratama"
+                            class="w-full px-4 py-3.5 rounded-xl bg-slate-950/80 border border-slate-700/80 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all text-sm sm:text-base">
+                    </div>
+
+                    <div>
+                        <label for="input-absen" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                            <i class="fa-solid fa-hashtag text-cyan-400 mr-1.5"></i>Nomor Absen
+                        </label>
+                        <input type="number" id="input-absen" required min="1" max="99"
+                            placeholder="Contoh: 12"
+                            class="w-full px-4 py-3.5 rounded-xl bg-slate-950/80 border border-slate-700/80 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all font-mono text-sm sm:text-base">
+                    </div>
+
+                    <div id="login-error" class="hidden p-3 rounded-xl bg-rose-500/15 border border-rose-500/40 text-rose-300 text-xs flex items-center gap-2">
+                        <i class="fa-solid fa-triangle-exclamation text-rose-400"></i>
+                        <span id="login-error-text">Harap isi Nama Lengkap dan Nomor Absen dengan benar!</span>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit"
+                            class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-violet-600 hover:from-cyan-400 hover:via-blue-500 hover:to-violet-500 text-white font-bold text-sm sm:text-base shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all transform active:scale-[0.99] flex items-center justify-center gap-2.5 cursor-pointer">
+                            <i class="fa-solid fa-shuttle-space"></i>
+                            <span>Luncurkan & Terima Misi Astronot</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Info Struktur Level -->
+                <div class="mt-7 pt-5 border-t border-slate-800/80 grid grid-cols-3 gap-2 text-center">
+                    <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+                        <span class="block text-xs font-mono text-emerald-400 font-bold">LEVEL 1</span>
+                        <span class="text-[11px] text-slate-400">10 Tantangan Dasar</span>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+                        <span class="block text-xs font-mono text-amber-400 font-bold">LEVEL 2</span>
+                        <span class="text-[11px] text-slate-400">10 Tantangan Terapan</span>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+                        <span class="block text-xs font-mono text-rose-400 font-bold">LEVEL 3</span>
+                        <span class="text-[11px] text-slate-400">10 Tantangan Analisis</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- HALAMAN 2: ANIMASI PENGACAKAN MISI OTOMATIS               -->
+        <!-- ========================================================= -->
+        <section id="screen-draw" class="hidden w-full max-w-4xl">
+            <div class="glass-panel rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden">
+                <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-80 h-40 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div id="draw-status-pill" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/15 border border-cyan-500/40 text-cyan-300 text-xs font-mono mb-4">
+                    <i class="fa-solid fa-satellite-dish fa-spin"></i>
+                    <span id="draw-status-text">Mengacak Misi Rahasia...</span>
+                </div>
+
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white">
+                    Astronot <span id="draw-student-name" class="text-cyan-400">Siswa</span>
+                    <span class="text-base sm:text-lg font-mono text-slate-400 block sm:inline sm:ml-2">(No. Absen: <span id="draw-student-absen" class="text-white">0</span>)</span>
+                </h2>
+                <p id="draw-instruction" class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto mt-2">
+                    Sistem navigasi luar angkasa sedang mengacak kartu misi secara otomatis untuk menentukan misi orbit wajibmu...
+                </p>
+
+                <!-- Area 3 Kartu Misi (Bergerak Otomatis Tanpa Klik Manual) -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 my-8 max-w-3xl mx-auto">
+                    <!-- Kartu 0 -->
+                    <div id="card-slot-0" class="h-72 sm:h-80 perspective-1000 select-none transition-all duration-500">
+                        <div class="card-inner">
+                            <!-- Sisi Tertutup -->
+                            <div class="card-front bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-cyan-500/40 p-6 flex flex-col items-center justify-center shadow-xl">
+                                <div class="w-16 h-16 rounded-2xl bg-cyan-500/15 border border-cyan-500/40 flex items-center justify-center mb-4">
+                                    <i class="fa-solid fa-shield-halved text-3xl text-cyan-400"></i>
+                                </div>
+                                <span class="font-mono text-xs tracking-widest text-cyan-400 uppercase mb-1">KARTU MISI #01</span>
+                                <h3 class="text-lg font-bold text-white">Misi Terenkripsi</h3>
+                                <p class="text-xs text-slate-400 mt-2 font-mono">Menunggu dekripsi sistem...</p>
+                            </div>
+                            <!-- Sisi Terbuka -->
+                            <div id="card-back-0" class="card-back bg-gradient-to-br from-cyan-950 via-slate-900 to-blue-950 border-2 border-cyan-400 p-5 flex flex-col items-center justify-center shadow-2xl">
+                                <!-- Diisi dinamis JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kartu 1 -->
+                    <div id="card-slot-1" class="h-72 sm:h-80 perspective-1000 select-none transition-all duration-500">
+                        <div class="card-inner">
+                            <!-- Sisi Tertutup -->
+                            <div class="card-front bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-violet-500/40 p-6 flex flex-col items-center justify-center shadow-xl">
+                                <div class="w-16 h-16 rounded-2xl bg-violet-500/15 border border-violet-500/40 flex items-center justify-center mb-4">
+                                    <i class="fa-solid fa-brain text-3xl text-violet-400"></i>
+                                </div>
+                                <span class="font-mono text-xs tracking-widest text-violet-400 uppercase mb-1">KARTU MISI #02</span>
+                                <h3 class="text-lg font-bold text-white">Misi Terenkripsi</h3>
+                                <p class="text-xs text-slate-400 mt-2 font-mono">Menunggu dekripsi sistem...</p>
+                            </div>
+                            <!-- Sisi Terbuka -->
+                            <div id="card-back-1" class="card-back bg-gradient-to-br from-violet-950 via-slate-900 to-indigo-950 border-2 border-violet-400 p-5 flex flex-col items-center justify-center shadow-2xl">
+                                <!-- Diisi dinamis JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kartu 2 -->
+                    <div id="card-slot-2" class="h-72 sm:h-80 perspective-1000 select-none transition-all duration-500">
+                        <div class="card-inner">
+                            <!-- Sisi Tertutup -->
+                            <div class="card-front bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-2 border-emerald-500/40 p-6 flex flex-col items-center justify-center shadow-xl">
+                                <div class="w-16 h-16 rounded-2xl bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center mb-4">
+                                    <i class="fa-solid fa-code text-3xl text-emerald-400"></i>
+                                </div>
+                                <span class="font-mono text-xs tracking-widest text-emerald-400 uppercase mb-1">KARTU MISI #03</span>
+                                <h3 class="text-lg font-bold text-white">Misi Terenkripsi</h3>
+                                <p class="text-xs text-slate-400 mt-2 font-mono">Menunggu dekripsi sistem...</p>
+                            </div>
+                            <!-- Sisi Terbuka -->
+                            <div id="card-back-2" class="card-back bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 border-2 border-emerald-400 p-5 flex flex-col items-center justify-center shadow-2xl">
+                                <!-- Diisi dinamis JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Indikator Proses / Hasil Misi Terkunci -->
+                <div class="flex flex-col items-center justify-center min-h-[104px]">
+                    <div id="shuffling-indicator" class="flex flex-col items-center gap-2.5">
+                        <div class="flex items-center gap-2 text-cyan-400 font-mono text-xs sm:text-sm">
+                            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+                            <span id="shuffling-subtext">Mengacak jalur algoritma & keamanan digital...</span>
+                        </div>
+                        <div class="w-56 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                            <div id="shuffle-progress-bar" class="h-full bg-gradient-to-r from-cyan-400 via-violet-500 to-emerald-400 transition-all duration-300" style="width: 15%"></div>
+                        </div>
+                    </div>
+
+                    <div id="draw-result-box" class="hidden flex-col items-center">
+                        <p class="text-xs sm:text-sm text-emerald-300 font-medium mb-4 bg-emerald-500/10 border border-emerald-500/30 px-4 py-2.5 rounded-xl">
+                            <i class="fa-solid fa-lock mr-1.5"></i>Misi telah terkunci! Kamu wajib menyelesaikan <strong id="locked-paket-label">MISI ALPHA: Algoritma Rahasia</strong> (30 Tantangan).
+                        </p>
+                        <button id="btn-start-quiz" onclick="startQuiz()"
+                            class="px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-extrabold text-sm sm:text-base shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all transform hover:scale-[1.02] active:scale-[0.99] flex items-center gap-2.5 cursor-pointer">
+                            <i class="fa-solid fa-rocket"></i>
+                            <span id="btn-start-quiz-text">Mulai Misi Sekarang</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- HALAMAN 3: PENGERJAAN MISI (30 TANTANGAN PILIHAN GANDA)   -->
+        <!-- ========================================================= -->
+        <section id="screen-quiz" class="hidden w-full max-w-6xl">
+            <!-- Status & Progress Bar Header -->
+            <div class="glass-panel rounded-2xl p-4 sm:p-5 mb-5">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span id="quiz-paket-tag" class="px-3 py-1 rounded-lg bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-bold">
+                            MISI ALPHA
+                        </span>
+                        <span id="quiz-level-badge" class="px-3 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-mono text-xs font-semibold">
+                            Level 1 • Dasar
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-4 text-xs sm:text-sm font-mono">
+                        <span class="text-slate-400">Terselesaikan: <strong id="quiz-answered-count" class="text-cyan-400">0</strong>/30</span>
+                        <span class="text-slate-400">Tantangan: <strong id="quiz-current-num" class="text-white">1</strong>/30</span>
+                    </div>
+                </div>
+                <!-- Progress Bar -->
+                <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div id="quiz-progress-bar" class="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 transition-all duration-300" style="width: 3.33%"></div>
+                </div>
+            </div>
+
+            <!-- Grid Utama: Area Soal (Kiri/Utama) + Navigasi Nomor (Kanan/Samping) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+                <!-- Kolom Soal -->
+                <div class="lg:col-span-8 glass-panel rounded-3xl p-5 sm:p-8">
+                    <div class="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-800">
+                        <span id="question-topic-badge" class="text-xs font-mono text-slate-400">
+                            <i class="fa-solid fa-bookmark text-cyan-400 mr-1.5"></i>Bab 1: Berpikir Komputasional
+                        </span>
+                        <button id="btn-flag" onclick="toggleFlag()"
+                            class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-700 bg-slate-900/80 text-slate-300 hover:border-amber-400/60 hover:text-amber-300 transition-all flex items-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-flag"></i>
+                            <span id="btn-flag-text">Tandai Ragu-ragu</span>
+                        </button>
+                    </div>
+
+                    <!-- Teks Pertanyaan -->
+                    <div class="mb-6">
+                        <div class="flex items-start gap-3">
+                            <span id="question-number-pill" class="flex-shrink-0 w-9 h-9 rounded-xl bg-cyan-500/15 border border-cyan-500/40 text-cyan-300 font-mono font-bold text-sm flex items-center justify-center mt-0.5">
+                                1
+                            </span>
+                            <p id="question-text" class="text-base sm:text-lg font-semibold text-white leading-relaxed">
+                                Memuat tantangan...
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 4 Pilihan Jawaban (A, B, C, D) -->
+                    <div id="options-container" class="space-y-3 mb-8">
+                        <!-- Diisi via JS -->
+                    </div>
+
+                    <!-- Tombol Navigasi Bawah -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-800">
+                        <button id="btn-prev" onclick="prevQuestion()"
+                            class="px-5 py-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 disabled:opacity-40 disabled:pointer-events-none cursor-pointer">
+                            <i class="fa-solid fa-chevron-left"></i>
+                            <span>Sebelumnya</span>
+                        </button>
+
+                        <div class="flex items-center gap-3 ml-auto">
+                            <button id="btn-next" onclick="nextQuestion()"
+                                class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-cyan-500/20 transition-all flex items-center gap-2 cursor-pointer">
+                                <span>Selanjutnya</span>
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+
+                            <button id="btn-submit-quiz" onclick="confirmSubmitQuiz()"
+                                class="hidden px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-extrabold text-xs sm:text-sm shadow-lg shadow-emerald-500/25 transition-all flex items-center gap-2 cursor-pointer">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Selesaikan Misi</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kolom Navigasi Nomor Tantangan (1-30) -->
+                <div class="lg:col-span-4 glass-panel rounded-3xl p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">
+                            <i class="fa-solid fa-grid-2 text-cyan-400 mr-1.5"></i>Peta Tantangan Misi
+                        </h3>
+                        <button onclick="confirmSubmitQuiz()" class="text-xs font-mono text-emerald-400 hover:underline cursor-pointer">
+                            Selesaikan Misi
+                        </button>
+                    </div>
+
+                    <!-- Grid 30 Nomor -->
+                    <div id="question-nav-grid" class="grid grid-cols-6 sm:grid-cols-10 lg:grid-cols-6 gap-2 mb-4">
+                        <!-- Tombol 1-30 diisi JS -->
+                    </div>
+
+                    <!-- Legenda Warna -->
+                    <div class="pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-[11px] text-slate-400">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded bg-cyan-500 inline-block"></span> Dijawab
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded bg-amber-500 inline-block"></span> Ragu-ragu
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded border-2 border-white bg-slate-800 inline-block"></span> Aktif
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded bg-slate-800 border border-slate-700 inline-block"></span> Belum
+                        </div>
+                    </div>
+
+                    <!-- Info Sebaran Level -->
+                    <div class="mt-4 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 text-[11px] text-slate-400 space-y-1 font-mono">
+                        <div class="flex justify-between">
+                            <span class="text-emerald-400">No. 01 - 10</span>
+                            <span>Level 1 (Dasar)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-amber-400">No. 11 - 20</span>
+                            <span>Level 2 (Terapan)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-rose-400">No. 21 - 30</span>
+                            <span>Level 3 (Analisis)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- HALAMAN 4: HASIL AKHIR & PEMBAHASAN MISI                  -->
+        <!-- ========================================================= -->
+        <section id="screen-result" class="hidden w-full max-w-5xl space-y-6">
+            <div class="glass-panel rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+                <div class="text-center max-w-2xl mx-auto">
+                    <div id="result-badge-icon" class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 mb-4 shadow-lg">
+                        <i class="fa-solid fa-trophy text-4xl"></i>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Misi Berhasil Diselesaikan!</h2>
+                    <p class="text-slate-400 text-sm mt-1">
+                        Laporan pencapaian misi Koding & Kecerdasan Artifisial Kelas 5
+                    </p>
+
+                    <!-- Identitas Peserta -->
+                    <div class="mt-5 inline-flex flex-wrap items-center justify-center gap-2 sm:gap-4 px-5 py-2.5 rounded-2xl bg-slate-900/90 border border-slate-800 text-xs sm:text-sm">
+                        <span>Agen: <strong id="res-name" class="text-white">-</strong></span>
+                        <span class="text-slate-600">•</span>
+                        <span>No. Absen: <strong id="res-absen" class="text-cyan-400 font-mono">-</strong></span>
+                        <span class="text-slate-600">•</span>
+                        <span>Misi: <strong id="res-paket" class="text-violet-400 font-mono">-</strong></span>
+                    </div>
+                </div>
+
+                <!-- Skor Utama & Statistik -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-5 my-8 items-center">
+                    <!-- Kartu Nilai -->
+                    <div class="md:col-span-5 p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-cyan-950/50 border border-cyan-500/30 text-center">
+                        <span class="text-xs font-mono uppercase tracking-widest text-cyan-400">SKOR AKHIR</span>
+                        <div id="res-score" class="text-6xl sm:text-7xl font-black text-white my-2 font-mono tracking-tight">
+                            0
+                        </div>
+                        <span id="res-predicate" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                            Sangat Baik
+                        </span>
+                        <div class="grid grid-cols-2 gap-3 mt-5 pt-4 border-t border-slate-800 text-xs">
+                            <div class="p-2 rounded-xl bg-emerald-500/10 text-emerald-300">
+                                <span class="block font-bold text-lg font-mono" id="res-correct">0</span>
+                                Tantangan Benar
+                            </div>
+                            <div class="p-2 rounded-xl bg-rose-500/10 text-rose-300">
+                                <span class="block font-bold text-lg font-mono" id="res-wrong">0</span>
+                                Tantangan Salah
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rincian Akurasi Per Level -->
+                    <div class="md:col-span-7 p-6 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-4">
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-chart-simple text-cyan-400"></i>
+                            Rincian Penguasaan Berdasarkan Level Kesulitan
+                        </h3>
+
+                        <!-- Level 1 -->
+                        <div>
+                            <div class="flex justify-between text-xs mb-1.5">
+                                <span class="font-semibold text-emerald-400">Level 1: Pemahaman Konsep Dasar</span>
+                                <span class="font-mono text-slate-300"><strong id="res-lvl1-text">0/10</strong> (<span id="res-lvl1-pct">0%</span>)</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div id="res-lvl1-bar" class="h-full bg-emerald-500 transition-all duration-700" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Level 2 -->
+                        <div>
+                            <div class="flex justify-between text-xs mb-1.5">
+                                <span class="font-semibold text-amber-400">Level 2: Penerapan Sehari-hari</span>
+                                <span class="font-mono text-slate-300"><strong id="res-lvl2-text">0/10</strong> (<span id="res-lvl2-pct">0%</span>)</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div id="res-lvl2-bar" class="h-full bg-amber-500 transition-all duration-700" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Level 3 -->
+                        <div>
+                            <div class="flex justify-between text-xs mb-1.5">
+                                <span class="font-semibold text-rose-400">Level 3: Penalaran & Analisis Kasus</span>
+                                <span class="font-mono text-slate-300"><strong id="res-lvl3-text">0/10</strong> (<span id="res-lvl3-pct">0%</span>)</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div id="res-lvl3-bar" class="h-full bg-rose-500 transition-all duration-700" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol Aksi Bawah Hasil -->
+                <div class="flex flex-wrap items-center justify-center gap-4">
+                    <button onclick="downloadResultReport()"
+                        class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-violet-600 hover:from-cyan-400 hover:via-blue-500 hover:to-violet-500 text-white font-bold text-sm shadow-lg shadow-cyan-500/25 transition-all flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-file-arrow-down"></i>
+                        <span>Download Hasil Nilai</span>
+                    </button>
+
+                    <button onclick="toggleReviewSection()" id="btn-toggle-review"
+                        class="px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-cyan-500/40 text-cyan-300 font-bold text-sm transition-all flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-magnifying-glass-chart"></i>
+                        <span>Lihat Review Jawaban & Pembahasan</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Panel Review Jawaban & Pembahasan (Hidden by Default) -->
+            <div id="review-section" class="hidden glass-panel rounded-3xl p-6 sm:p-8 space-y-5">
+                <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-800">
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Review Jawaban & Pembahasan Lengkap</h3>
+                        <p class="text-xs text-slate-400">Pelajari kembali kunci jawaban dan penjelasan materi untuk setiap nomor.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="filterReview('all')" class="review-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 cursor-pointer">Semua (30)</button>
+                        <button onclick="filterReview('wrong')" class="review-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 cursor-pointer">Salah Saja</button>
+                    </div>
+                </div>
+                <div id="review-list" class="space-y-4">
+                    <!-- Item review diisi JS -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Custom Modal Konfirmasi (Pengganti alert/confirm bawaan browser) -->
+    <div id="custom-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-panel rounded-2xl max-w-md w-full p-6 border border-cyan-500/30 shadow-2xl">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center">
+                    <i class="fa-solid fa-circle-question text-lg"></i>
+                </div>
+                <h3 id="modal-title" class="text-lg font-bold text-white">Konfirmasi Penyelesaian Misi</h3>
+            </div>
+            <p id="modal-message" class="text-sm text-slate-300 leading-relaxed mb-6">
+                Apakah kamu yakin ingin menyelesaikan misi dan mengumpulkan seluruh jawabanmu?
+            </p>
+            <div class="flex items-center justify-end gap-3">
+                <button onclick="closeModal()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs sm:text-sm font-semibold cursor-pointer">
+                    Periksa Lagi
+                </button>
+                <button onclick="finalizeQuiz()" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs sm:text-sm font-extrabold cursor-pointer">
+                    Ya, Selesaikan Misi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================
+        // METADATA MISI (MENGGANTIKAN PAKET SOAL A, B, C)
+        // =========================================================================
+        const MISSION_META = {
+            A: {
+                code: "MISI ORBIT ALPHA",
+                title: "Algoritma Bintang",
+                subtitle: "Susun jalur navigasi logika komputasional & benteng pertahanan galaksi!",
+                icon: "fa-user-astronaut",
+                textClass: "text-cyan-400",
+                badgeClass: "bg-cyan-500/20 border-cyan-400/50 text-cyan-300"
+            },
+            B: {
+                code: "MISI NEBULA BETA",
+                title: "Perisai Siber Angkasa",
+                subtitle: "Kendalikan sistem komputer pesawat & lindungi data kru dari ancaman luar angkasa!",
+                icon: "fa-shuttle-space",
+                textClass: "text-violet-400",
+                badgeClass: "bg-violet-500/20 border-violet-400/50 text-violet-300"
+            },
+            C: {
+                code: "MISI GALAKSI GAMMA",
+                title: "Logika Stasiun Induk",
+                subtitle: "Uji ketepatan instruksi terstruktur & analisis alur kerja teknologi antariksa!",
+                icon: "fa-satellite",
+                textClass: "text-emerald-400",
+                badgeClass: "bg-emerald-500/20 border-emerald-400/50 text-emerald-300"
+            }
+        };
+
+        // =========================================================================
+        // BANK SOAL LENGKAP: 90 SOAL (MISI ALPHA = 30, MISI BETA = 30, MISI GAMMA = 30)
+        // Setiap Misi: 10 Soal Level 1 (Dasar), 10 Soal Level 2 (Terapan), 10 Soal Level 3 (Analisis)
+        // =========================================================================
+        const QUIZ_BANK = {
+            // ---------------------------------------------------------------------
+            // MISI ORBIT ALPHA (30 SOAL)
+            // ---------------------------------------------------------------------
+            A: [
+                // LEVEL 1 (No. 1 - 10)
+                {
+                    level: 1,
+                    topic: "Bab 1 • Pemecahan Masalah",
+                    q: "Keadaan yang terasa janggal, kurang tepat, atau membuat bingung ketika sesuatu tidak berjalan sesuai harapan disebut ....",
+                    options: ["Masalah", "Hiburan", "Perayaan", "Hadiah"],
+                    ans: 0,
+                    explanation: "Pada materi Bab 1 hal. 6, masalah muncul ketika sesuatu tidak berjalan sebagaimana mestinya atau tidak sesuai harapan."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Berpikir Komputasional",
+                    q: "Berpikir komputasional secara ringkas dapat dipahami sebagai kemampuan ....",
+                    options: ["Menghafal semua kode rumit", "Berpikir secara logis dan sistematis seperti komputer", "Bermain gim sepanjang hari", "Menghindari semua kesulitan"],
+                    ans: 1,
+                    explanation: "Berpikir komputasional adalah cara berpikir menyelesaikan masalah secara logis, teratur, dan sistematis seperti cara kerja komputer (hal. 8 & 62)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Dekomposisi",
+                    q: "Komponen berpikir komputasional yang berarti memecah masalah besar menjadi bagian-bagian kecil agar lebih mudah diselesaikan adalah ....",
+                    options: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Flowchart"],
+                    ans: 1,
+                    explanation: "Dekomposisi berarti memecah masalah atau tugas besar menjadi bagian-bagian kecil yang lebih mudah dipahami dan dikerjakan (hal. 9)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Pengenalan Pola",
+                    q: "Kemampuan menemukan kesamaan atau kejadian yang berulang dalam suatu masalah atau peristiwa disebut ....",
+                    options: ["Pengenalan pola", "Dekomposisi", "Abstraksi", "Peretasan"],
+                    ans: 0,
+                    explanation: "Pengenalan pola adalah kemampuan melihat hal-hal yang berulang atau hubungan yang sama dalam suatu masalah (hal. 9 & 11)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Abstraksi",
+                    q: "Memilih informasi yang penting saja dan mengabaikan hal yang tidak diperlukan merupakan pengertian dari ....",
+                    options: ["Algoritma", "Abstraksi", "Dekomposisi", "Biner"],
+                    ans: 1,
+                    explanation: "Abstraksi membantu kita fokus pada informasi penting dan menyaring detail yang tidak relevan (hal. 9 & 12)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Algoritma",
+                    q: "Langkah-langkah yang disusun secara urut dan logis untuk menyelesaikan masalah disebut ....",
+                    options: ["Pseudocode", "Algoritma", "Malware", "Browser"],
+                    ans: 1,
+                    explanation: "Algoritma adalah urutan langkah-langkah terstruktur dan logis untuk mencapai tujuan atau menyelesaikan masalah (hal. 12 & 62)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Pseudocode",
+                    q: "Penulisan langkah instruksi secara logis dan terstruktur menggunakan bahasa yang mudah dipahami disebut ....",
+                    options: ["Pseudocode", "Antivirus", "Keyboard", "Spam"],
+                    ans: 0,
+                    explanation: "Pseudocode menuliskan urutan instruksi dengan bahasa sederhana yang mudah dipahami sebelum dibuat menjadi program komputer (hal. 15)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 2 • Teknologi Digital",
+                    q: "Teknologi yang bekerja menggunakan alat elektronik untuk mengolah, menyimpan, dan mengirim informasi disebut teknologi ....",
+                    options: ["Analog", "Digital", "Tradisional", "Manual"],
+                    ans: 1,
+                    explanation: "Teknologi digital menggunakan perangkat elektronik (seperti komputer, ponsel, dan internet) untuk mengolah serta mengirim data (hal. 36)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 2 • Perangkat Keras",
+                    q: "Bagian fisik dari komputer atau perangkat digital yang dapat dilihat dan disentuh disebut ....",
+                    options: ["Perangkat lunak (software)", "Perangkat keras (hardware)", "Sistem operasi", "Aplikasi"],
+                    ans: 1,
+                    explanation: "Hardware atau perangkat keras adalah komponen fisik komputer seperti monitor, keyboard, mouse, dan CPU (hal. 38)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 2 • Keamanan Informasi",
+                    q: "Informasi pribadi adalah data yang dapat digunakan untuk mengenali atau mengidentifikasi seseorang. Contohnya adalah ....",
+                    options: ["Warna kesukaan", "Hobi", "Alamat rumah dan kata sandi", "Makanan favorit"],
+                    ans: 2,
+                    explanation: "Alamat rumah, kata sandi, nomor telepon, dan tanggal lahir adalah informasi pribadi yang harus dijaga kerahasiaannya (hal. 43-44)."
+                },
+
+                // LEVEL 2 (No. 11 - 20)
+                {
+                    level: 2,
+                    topic: "Bab 1 • Mencari Penyebab",
+                    q: "Untuk menemukan akar penyebab utama sebuah masalah secara bertahap, kita dapat bertanya '....' berulang kali.",
+                    options: ["Siapa", "Mengapa", "Berapa", "Kapan"],
+                    ans: 1,
+                    explanation: "Pada materi hal. 7, bertanya 'Mengapa?' berulang kali membantu menelusuri hingga ke akar penyebab masalah."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 1 • Pengenalan Pola",
+                    q: "Perhatikan deretan bilangan berikut: 2, 5, 8, 11, .... Angka berikutnya sesuai pola tersebut adalah ....",
+                    options: ["13", "14", "15", "16"],
+                    ans: 1,
+                    explanation: "Pola bilangan tersebut selalu bertambah 3 (2+3=5, 5+3=8, 8+3=11), sehingga angka berikutnya adalah 11 + 3 = 14 (hal. 11)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 1 • Pseudocode & Flowchart",
+                    q: "Dalam aturan penulisan pseudocode pada bahan ajar, instruksi diawali dengan kata 'Mulai' dan ditutup dengan kata ....",
+                    options: ["Ulangi", "Selesai", "Batal", "Jeda"],
+                    ans: 1,
+                    explanation: "Pseudocode diawali dengan 'Mulai' dan ditutup dengan 'Selesai' agar awal dan akhir proses jelas (hal. 15-16)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 1 • Algoritma Sehari-hari",
+                    q: "Pada proses membuat geblek khas Kulon Progo (hal. 13), urutan langkah yang tepat setelah menyiapkan tepung tapioka dan mencampur bumbu adalah ....",
+                    options: ["Membentuk adonan lalu menggoreng hingga matang", "Langsung menyajikannya mentah", "Menyimpan tepung di kulkas tanpa diolah", "Menghancurkan bumbu setelah digoreng"],
+                    ans: 0,
+                    explanation: "Urutan membuat geblek: menyiapkan tepung tapioka, mencampur bumbu, membentuk adonan, lalu menggoreng hingga matang (hal. 13)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 1 • ScratchJr",
+                    q: "Pada aktivitas koding sederhana menggunakan ScratchJr, menyusun blok perintah secara runtut membantu kita memahami bahwa komputer ....",
+                    options: ["Bekerja mengikuti instruksi yang tersusun teratur", "Tidak membutuhkan urutan perintah", "Hanya bisa menampilkan gambar diam", "Selalu menebak perintah sendiri"],
+                    ans: 0,
+                    explanation: "Di ScratchJr, urutan blok perintah menentukan gerakan karakter; jika urutannya salah, karakter tidak bergerak sesuai tujuan (hal. 29-30)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 2 • Analog vs Digital",
+                    q: "Pasangan kegiatan teknologi analog dan teknologi digital yang tepat berdasarkan Tabel 2.1 adalah ....",
+                    options: [
+                        "Analog: e-book | Digital: buku cetak",
+                        "Analog: surat/kartu pos | Digital: chat melalui aplikasi pesan",
+                        "Analog: smart TV | Digital: televisi tabung",
+                        "Analog: uang digital | Digital: uang tunai"
+                    ],
+                    ans: 1,
+                    explanation: "Mengirim pesan dengan surat/kartu pos termasuk teknologi analog, sedangkan chat di aplikasi pesan termasuk teknologi digital (hal. 36-37)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 2 • Perangkat Keras & Lunak",
+                    q: "Perangkat yang berfungsi memindai dokumen atau gambar fisik menjadi file digital di komputer disebut ....",
+                    options: ["Printer", "Scanner", "Mouse", "Speaker"],
+                    ans: 1,
+                    explanation: "Scanner digunakan untuk memindai dokumen/gambar fisik menjadi file digital, sedangkan printer untuk mencetak ke kertas (hal. 39)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 2 • Sistem Operasi & Aplikasi",
+                    q: "Program utama yang wajib ada di setiap komputer atau ponsel seperti Windows dan Android disebut ....",
+                    options: ["Sistem operasi (Operating System)", "Perangkat keras pendukung", "Pesan tautan", "Bumbu halus"],
+                    ans: 0,
+                    explanation: "Sistem operasi (seperti Windows dan Android) adalah program utama wajib agar perangkat dapat digunakan (hal. 39-40)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 2 • Konsep IPO",
+                    q: "Pada contoh membuat jus mangga (hal. 42), buah mangga, air, dan gula pasir yang dimasukkan ke blender disebut tahap ....",
+                    options: ["Input (Masukan)", "Proses", "Output (Keluaran)", "Penyimpanan awan"],
+                    ans: 0,
+                    explanation: "Bahan-bahan yang dimasukkan ke dalam sistem/blender merupakan Input (masukan), blender berputar adalah Proses, dan jus adalah Output."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 2 • Keamanan & Budaya Digital",
+                    q: "Menerapkan sikap tepa selira dan unggah-ungguh di ruang digital dapat dilakukan dengan cara ....",
+                    options: [
+                        "Menyebarkan rahasia teman agar viral",
+                        "Menggunakan bahasa sopan dan tidak menyebarkan data orang lain tanpa izin",
+                        "Mengedit foto teman untuk mengejek",
+                        "Membagikan kata sandi akun ke grup umum"
+                    ],
+                    ans: 1,
+                    explanation: "Nilai tepa selira dan unggah-ungguh di era digital berarti bersikap sopan, menghargai perasaan orang lain, dan menjaga privasi bersama (hal. 47)."
+                },
+
+                // LEVEL 3 (No. 21 - 30)
+                {
+                    level: 3,
+                    topic: "Bab 1 • Analisis Penyebab Masalah",
+                    q: "Regi sering terlambat ke sekolah karena bangun kesiangan akibat bermain gawai sampai larut malam. Solusi sistematis yang paling tepat setelah merumuskan cara adalah ....",
+                    options: [
+                        "Menerapkan solusi (memasang alarm & tidur lebih awal) lalu mengevaluasi hasilnya",
+                        "Menyalahkan jadwal pelajaran yang terlalu pagi",
+                        "Berhenti bersekolah selama satu minggu",
+                        "Mengabaikan masalah karena sudah biasa"
+                    ],
+                    ans: 0,
+                    explanation: "Setelah merumuskan solusi, langkah sistematis berikutnya adalah menerapkan solusi dan mengevaluasi hasilnya (hal. 8)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 1 • Dekomposisi Kasus",
+                    q: "Saat kerja bakti kelas, tugas membersihkan kelas belum terbagi sehingga ada bagian yang disapu dua kali sementara jendela belum dibersihkan. Komponen yang paling tepat diterapkan adalah ....",
+                    options: [
+                        "Dekomposisi, dengan membagi tugas per area (lantai, jendela, papan tulis, meja)",
+                        "Menghapus semua jadwal piket kelas",
+                        "Membiarkan semua siswa menyapu satu sudut saja",
+                        "Menunda kerja bakti tanpa batas waktu"
+                    ],
+                    ans: 0,
+                    explanation: "Dekomposisi memecah tugas besar membersihkan kelas menjadi bagian-bagian tugas yang jelas agar tidak tumpang tindih atau terlewat (hal. 9 & 29)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 1 • Abstraksi Kasus",
+                    q: "Beni mencari jalan menuju Pantai Mlarangan Asri. Ia hanya memperhatikan papan petunjuk arah dan jalan utama tanpa memikirkan warna cat rumah warga. Mengapa tindakan Beni tepat?",
+                    options: [
+                        "Karena warna cat rumah tidak membantu menentukan arah menuju tujuan (abstraksi)",
+                        "Karena papan petunjuk arah selalu salah",
+                        "Karena berjalan tanpa arah lebih menantang",
+                        "Karena warna rumah selalu berubah setiap detik"
+                    ],
+                    ans: 0,
+                    explanation: "Beni menerapkan abstraksi dengan fokus pada informasi penting (papan petunjuk & jalan utama) dan mengabaikan detail yang tidak relevan (hal. 12 & 33)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 1 • Dampak Instruksi Tidak Jelas",
+                    q: "Raka meminta Dimas membuat gula semut dengan instruksi singkat 'Masak saja nira kelapanya sampai jadi gula' tanpa menyebut menyaring nira dan terus mengaduk. Akibatnya gula menggumpal. Pelajaran utamanya adalah ....",
+                    options: [
+                        "Instruksi yang kurang jelas dan tidak urut dapat menyebabkan hasil kerja keliru",
+                        "Memasak gula semut tidak perlu memperhatikan langkah",
+                        "Instruksi cukup diucapkan secara terburu-buru",
+                        "Bahan baku tidak memengaruhi hasil akhir"
+                    ],
+                    ans: 0,
+                    explanation: "Instruksi yang tidak lengkap dan tidak berurutan membuat pelaksana salah memahami langkah sehingga hasilnya tidak sesuai (hal. 22-23)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 1 • Keseimbangan & Pengenalan Pola",
+                    q: "Rani berlatih Tari Angguk setiap sore hingga lupa belajar menghadapi Asesmen Tengah Semester. Komponen berpikir komputasional yang membantu Rani mengatur rutinitas latihan dan belajar secara berulang adalah ....",
+                    options: [
+                        "Pengenalan pola (mengenali kebiasaan/jadwal berulang) dan algoritma penyusunan jadwal",
+                        "Mengabaikan waktu belajar sama sekali",
+                        "Menghapus latihan menari selamanya",
+                        "Mengerjakan ujian tanpa persiapan"
+                    ],
+                    ans: 0,
+                    explanation: "Mengenali pola waktu luang harian serta menyusun urutan jadwal latihan dan belajar secara teratur membantu menyeimbangkan keduanya (hal. 4 & 29)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 2 • Sinyal Analog vs Digital",
+                    q: "Teknologi analog menggunakan sinyal kontinu yang kualitasnya mudah menurun saat sinyal lemah, sedangkan teknologi digital menggunakan sinyal diskrit (0 dan 1) sehingga ....",
+                    options: [
+                        "Kualitas suara atau gambar cenderung lebih jernih dan stabil",
+                        "Hanya bisa digunakan untuk menulis surat kertas",
+                        "Tidak memerlukan alat elektronik sama sekali",
+                        "Selalu lebih lambat daripada mengirim surat pos"
+                    ],
+                    ans: 0,
+                    explanation: "Pada Gambar 2.2 (hal. 36), teknologi digital memakai sinyal diskrit (0 dan 1) sehingga kualitas suara/gambar lebih jernih dan stabil."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 2 • Kerja Sama Hardware & Software",
+                    q: "Mengapa perangkat keras dan perangkat lunak harus saling bekerja sama agar komputer dapat berfungsi dengan baik?",
+                    options: [
+                        "Perangkat keras menyediakan bagian fisik dan perangkat lunak mengatur/menjalankan perintah agar tugas terlaksana",
+                        "Perangkat keras bisa bekerja sendiri tanpa program apa pun",
+                        "Perangkat lunak adalah kabel listrik utama komputer",
+                        "Keduanya memiliki fungsi yang sama persis"
+                    ],
+                    ans: 0,
+                    explanation: "Perangkat keras dan perangkat lunak saling terhubung; perangkat lunak menggerakkan/mengolah perintah pada perangkat keras (hal. 38-42)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 2 • Alur IPO Pesan Digital",
+                    q: "Saat kita mengetik pesan di ponsel lalu mengirimkannya lewat internet hingga terbaca oleh teman, urutan alur IPO yang sesuai adalah ....",
+                    options: [
+                        "Input: mengetik pesan -> Proses: aplikasi & internet mengolah/mengirim -> Output: pesan diterima & dibaca teman",
+                        "Input: pesan dibaca teman -> Proses: mematikan layar -> Output: mengetik huruf",
+                        "Input: baterai habis -> Proses: layar mati -> Output: mengetik pesan",
+                        "Input: menghapus aplikasi -> Proses: mengunduh game -> Output: mengirim surat pos"
+                    ],
+                    ans: 0,
+                    explanation: "Mengetik pesan adalah input, pengolahan & pengiriman data lewat internet adalah proses, dan pesan tampil/terbaca adalah output (hal. 41)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 2 • Ancaman Tautan & Malware",
+                    q: "Reno mendapat pesan dari nomor tidak dikenal berisi tautan hadiah undian dan diminta mengisi alamat rumah serta kata sandi. Tindakan paling aman bagi Reno adalah ....",
+                    options: [
+                        "Tidak mengklik tautan, tidak memberi data/sandi, lalu melaporkannya kepada orang tua atau guru",
+                        "Segera mengklik tautan dan mengisi kata sandi utama",
+                        "Meneruskan tautan ke semua teman agar ikut mencoba",
+                        "Membagikan kode OTP agar hadiah cepat cair"
+                    ],
+                    ans: 0,
+                    explanation: "Tautan mencurigakan bisa berujung pencurian data atau malware; jangan diklik dan mintalah bantuan orang tua/guru (hal. 46-47 & 55)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 2 • Risiko Kebocoran Data",
+                    q: "Tia mengunggah foto kartu pelajar ke media sosial yang menampilkan nama lengkap, sekolah, dan tanggal lahir. Risiko yang dapat muncul dari tindakan tersebut adalah ....",
+                    options: [
+                        "Data pribadi dapat disalahgunakan pihak tidak bertanggung jawab untuk penipuan atau pencurian identitas",
+                        "Foto kartu pelajar otomatis menghapus akun media sosial",
+                        "Kuota internet menjadi berkurang setengahnya",
+                        "Kualitas kamera ponsel meningkat drastis"
+                    ],
+                    ans: 0,
+                    explanation: "Mengunggah foto kartu pelajar membeberkan informasi pribadi yang berisiko disalahgunakan untuk pencurian identitas atau penipuan (hal. 43-44 & 55)."
+                }
+            ],
+
+            // ---------------------------------------------------------------------
+            // MISI NEBULA BETA (30 SOAL)
+            // ---------------------------------------------------------------------
+            B: [
+                // LEVEL 1 (No. 1 - 10)
+                {
+                    level: 1,
+                    topic: "Bab 1 • Pemecahan Masalah",
+                    q: "Saat buku pelajaran tertinggal di rumah ketika sudah tiba di sekolah, perasaan yang wajar muncul adalah ....",
+                    options: ["Panik atau bingung", "Sangat kenyang", "Mengantuk berat", "Tidak peduli"],
+                    ans: 0,
+                    explanation: "Pada materi Bab 1 hal. 5, lupa membawa buku ke sekolah dapat membuat seseorang merasa panik, takut, bingung, atau tidak tenang."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Komponen Berpikir Komputasional",
+                    q: "Berikut ini yang bukan termasuk empat komponen utama berpikir komputasional adalah ....",
+                    options: ["Dekomposisi", "Pengenalan pola", "Abstraksi", "Peretasan"],
+                    ans: 3,
+                    explanation: "Empat komponen utama berpikir komputasional adalah dekomposisi, pengenalan pola, abstraksi, dan algoritma (hal. 9)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Dekomposisi",
+                    q: "Memecah pekerjaan besar menjadi bagian-bagian kecil supaya lebih mudah dipahami dan dikerjakan disebut ....",
+                    options: ["Dekomposisi", "Pengenalan pola", "Output", "Cyberbullying"],
+                    ans: 0,
+                    explanation: "Dekomposisi membantu mengurangi rasa bingung saat menghadapi tugas besar dengan membaginya menjadi bagian kecil (hal. 9)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Pengenalan Pola",
+                    q: "Jadwal pelajaran di sekolah yang berulang setiap minggu merupakan contoh penerapan ....",
+                    options: ["Pengenalan pola", "Malware", "Scanner", "Kata sandi"],
+                    ans: 0,
+                    explanation: "Jadwal pelajaran mingguan serta urutan hari dan bulan adalah contoh pengenalan pola dalam kehidupan sehari-hari (hal. 11)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Abstraksi",
+                    q: "Saat mencari nama teman di daftar yang panjang, kita langsung melihat huruf awalnya saja. Cara ini disebut ....",
+                    options: ["Abstraksi", "Peretasan", "Input", "Flowchart"],
+                    ans: 0,
+                    explanation: "Fokus pada bagian penting (huruf awal) dan mengabaikan bagian lain yang belum perlu merupakan contoh abstraksi (hal. 12)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Algoritma",
+                    q: "Urutan langkah menyikat gigi dari mengambil sikat hingga menyimpannya kembali adalah contoh ....",
+                    options: ["Algoritma", "Sistem operasi", "Phishing", "CPU"],
+                    ans: 0,
+                    explanation: "Pada Gambar 1.9 (hal. 13), langkah-langkah terurut menyikat gigi merupakan contoh algoritma dalam kehidupan sehari-hari."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Flowchart",
+                    q: "Diagram yang menunjukkan urutan langkah penyelesaian masalah menggunakan simbol dan panah disebut ....",
+                    options: ["Flowchart (diagram alur)", "Keyboard", "Webcam", "E-book"],
+                    ans: 0,
+                    explanation: "Flowchart atau diagram alur menggambarkan urutan langkah menggunakan simbol dan panah agar mudah dibaca (hal. 16 & 63)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 2 • Teknologi Analog",
+                    q: "Contoh teknologi analog dalam kehidupan sehari-hari berdasarkan materi Bab 2 adalah ....",
+                    options: ["E-book di tablet", "Radio dan surat", "Marketplace", "Belanja daring"],
+                    ans: 1,
+                    explanation: "Teknologi analog bekerja secara manual atau dengan alat sederhana seperti radio, surat, dan televisi tabung (hal. 36-37)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 2 • Perangkat Keras",
+                    q: "Bagian komputer yang digunakan untuk mengetik huruf dan angka adalah ....",
+                    options: ["Keyboard (papan ketik)", "Monitor", "Printer", "Flashdisk"],
+                    ans: 0,
+                    explanation: "Keyboard atau papan ketik adalah perangkat keras untuk mengetik teks atau memasukkan perintah (hal. 38)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 2 • Keamanan Data",
+                    q: "Kode rahasia sementara yang dikirim untuk verifikasi akun atau transaksi disebut ....",
+                    options: ["OTP (One Time Password)", "Flowchart", "Browser", "Speaker"],
+                    ans: 0,
+                    explanation: "Pada glosarium hal. 63, OTP adalah kode rahasia sementara untuk verifikasi akun atau transaksi dan tidak boleh dibagikan."
+                },
+
+                // LEVEL 2 (No. 11 - 20)
+                {
+                    level: 2,
+                    topic: "Bab 1 • Langkah Sistematis",
+                    q: "Urutan awal pemecahan masalah secara sistematis pada Bab 1 hal. 8 dimulai dari ....",
+                    options: [
+                        "Mengidentifikasi masalah lalu mencari penyebab masalah",
+                        "Mengevaluasi hasil sebelum menentukan masalah",
+                        "Menyerah tanpa mencoba solusi",
+                        "Menyembunyikan masalah dari guru"
+                    ],
+                    ans: 0,
+                    explanation: "Langkah sistematis dimulai dengan mengidentifikasi masalah, mencari penyebabnya, merumuskan solusi, menerapkannya, lalu mengevaluasi (hal. 8)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 1 • Pola Bilangan",
+                    q: "Deretan bilangan 1, 3, 5, 7, 9 pada contoh bahan ajar membentuk ....",
+                    options: ["Pola bilangan ganjil", "Pola bilangan kelipatan 10", "Pola acak tanpa aturan", "Pola bilangan prima saja"],
+                    ans: 0,
+                    explanation: "Bilangan 1, 3, 5, 7, 9 adalah contoh pola bilangan ganjil yang selalu bertambah 2 (hal. 11)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 1 • Aturan Pseudocode",
+                    q: "Salah satu kaidah menulis pseudocode yang baik adalah ....",
+                    options: [
+                        "Menggunakan kata kerja aktif dan satu langkah untuk satu perintah",
+                        "Menggabungkan banyak perintah rumit dalam satu kalimat panjang",
+                        "Wajib memakai kode mesin yang sulit dibaca manusia",
+                        "Menghilangkan kata awal dan akhir proses"
+                    ],
+                    ans: 0,
+                    explanation: "Pseudocode sebaiknya menggunakan kata kerja aktif, satu langkah satu perintah, serta diawali 'Mulai' dan ditutup 'Selesai' (hal. 15-16)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 1 • Algoritma Menyiapkan Tas",
+                    q: "Saat menyiapkan perlengkapan sekolah malam hari (hal. 13), langkah yang dilakukan setelah mengecek jadwal pelajaran besok adalah ....",
+                    options: [
+                        "Memasukkan buku dan alat tulis sesuai jadwal",
+                        "Pergi tidur tanpa memeriksa isi tas",
+                        "Mengosongkan seluruh tas sekolah",
+                        "Menyimpan sepatu di atas meja belajar"
+                    ],
+                    ans: 0,
+                    explanation: "Setelah mengecek jadwal pelajaran besok, langkah berikutnya adalah memasukkan buku dan alat tulis sesuai jadwal tersebut (hal. 13)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 1 • Koding & ScratchJr",
+                    q: "Kegiatan menuliskan perintah atau instruksi agar komputer atau perangkat digital menjalankan tugas tertentu disebut ....",
+                    options: ["Koding", "Perundungan", "Abstraksi", "Pemindaian"],
+                    ans: 0,
+                    explanation: "Koding adalah kegiatan menuliskan instruksi menggunakan bahasa pemrograman (seperti ScratchJr atau Python) agar perangkat menjalankan tugas (hal. 29)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 2 • Manfaat Teknologi Digital",
+                    q: "Dibandingkan cara manual dahulu, teknologi digital membuat komunikasi dan pengolahan informasi menjadi ....",
+                    options: ["Lebih cepat, mudah, dan praktis", "Selalu memakan waktu berhari-hari", "Tidak bisa menyimpan gambar atau suara", "Hanya berfungsi tanpa listrik atau data"],
+                    ans: 0,
+                    explanation: "Teknologi digital membantu menyimpan, mengolah, dan mengirim informasi secara lebih cepat, mudah, dan efisien (hal. 35-36)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 2 • Perangkat Keras Pendukung",
+                    q: "Perangkat keras yang terletak di bagian atas layar laptop dan digunakan untuk merekam video atau video call adalah ....",
+                    options: ["Kamera (Webcam)", "Keyboard", "Mousepad", "Printer"],
+                    ans: 0,
+                    explanation: "Kamera atau webcam digunakan untuk mengambil foto/video atau melakukan panggilan video (hal. 39)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 2 • Jenis Aplikasi",
+                    q: "Contoh aplikasi penjelajah internet (browser) yang disebutkan pada materi Bab 2 hal. 40 adalah ....",
+                    options: ["Google Chrome, Safari, dan Mozilla Firefox", "Microsoft Word dan Google Docs", "Zoom dan Google Meet", "Minecraft dan Roblox"],
+                    ans: 0,
+                    explanation: "Google Chrome, Safari, dan Mozilla Firefox adalah contoh aplikasi penjelajah internet untuk mencari informasi daring (hal. 40)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 2 • Konsep IPO",
+                    q: "Dalam alur kerja IPO (Input - Proses - Output), bagian yang bertugas mengolah perintah atau data sesuai aturan disebut ....",
+                    options: ["Proses", "Input", "Output", "Kabel"],
+                    ans: 0,
+                    explanation: "Proses adalah tahap pengolahan data atau perintah di dalam sistem berdasarkan aturan yang ditentukan untuk menghasilkan output (hal. 41-42)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 2 • Informasi Aman Dibagikan",
+                    q: "Di antara pilihan berikut, informasi yang relatif aman dibagikan dengan tetap berhati-hati adalah ....",
+                    options: ["Kata sandi akun", "Alamat rumah lengkap", "Hobi dan warna kesukaan", "Nomor telepon pribadi"],
+                    ans: 2,
+                    explanation: "Hobi, warna favorit, dan makanan kesukaan relatif aman dibagikan, berbeda dengan alamat rumah, nomor telepon, dan kata sandi (hal. 43-44)."
+                },
+
+                // LEVEL 3 (No. 21 - 30)
+                {
+                    level: 3,
+                    topic: "Bab 1 • Akar Masalah Kamar Berantakan",
+                    q: "Pada contoh penelusuran 'Mengapa?' di halaman 7, kamar berantakan berawal dari terburu-buru pergi dan tidak punya jadwal harian teratur. Solusi tepat untuk mencegahnya adalah ....",
+                    options: [
+                        "Membuat jadwal harian yang teratur dan membiasakan merapikan barang setelah digunakan",
+                        "Menutup pintu kamar agar tidak terlihat berantakan",
+                        "Memindahkan semua barang ke luar rumah",
+                        "Menunggu orang lain merapikannya setiap hari"
+                    ],
+                    ans: 0,
+                    explanation: "Mengetahui akar masalahnya membantu kita menyusun jadwal harian teratur dan melaksanakannya secara konsisten (hal. 7)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 1 • Dekomposisi Masalah Nino",
+                    q: "Nino memecah masalah 'sering ada barang tertinggal' menjadi bangun terlambat, sarapan tergesa-gesa, dan tidak memeriksa tas. Manfaat memecah masalah tersebut adalah ....",
+                    options: [
+                        "Memudahkan menemukan penyebab tiap bagian dan menentukan solusi yang tepat",
+                        "Membuat masalah menjadi semakin rumit",
+                        "Menghilangkan kebutuhan menyiapkan perlengkapan sekolah",
+                        "Mengganti peran alarm sepenuhnya"
+                    ],
+                    ans: 0,
+                    explanation: "Dekomposisi membantu mengurai masalah menjadi bagian kecil agar penyebabnya terlihat jelas dan mudah diatasi (hal. 10)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 1 • Abstraksi Cerita",
+                    q: "Dalam cerita 'Pita Merah yang Hilang' (hal. 20-21), Nisa melihat burung membawa pita merah lalu mengikuti arahnya ke taman tempat Bimo kebingungan mencari pitanya. Informasi paling inti untuk membantu Bimo adalah ....",
+                    options: [
+                        "Burung kecil membawa pita merah milik Bimo ke arah taman",
+                        "Warna pot bunga di depan rumah Nisa",
+                        "Jam berapa burung berkicau pagi hari",
+                        "Nama penjual layang-layang di kota lain"
+                    ],
+                    ans: 0,
+                    explanation: "Abstraksi membantu Nisa menghubungkan fakta penting (burung membawa pita merah dan Bimo kehilangan pita) untuk menemukan solusinya (hal. 20-21)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 1 • Urutan Algoritma",
+                    q: "Ibu memberi instruksi membuat teh manis: 'Ambil gelas, masukkan teh, masukkan gula, lalu tuangkan air.' Mengapa urutan atau kelengkapan instruksi penting diperhatikan?",
+                    options: [
+                        "Karena langkah yang kurang tepat atau tidak urut dapat membuat hasil tidak sesuai keinginan",
+                        "Karena air panas tidak diperlukan saat membuat teh",
+                        "Karena gula harus dimasukkan setelah teh diminum",
+                        "Karena urutan tidak berpengaruh pada rasa"
+                    ],
+                    ans: 0,
+                    explanation: "Instruksi harus jelas, logis, dan berurutan agar tujuan tercapai tanpa kesalahan atau hasil yang meleset (hal. 15)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 1 • Gabungan Komponen",
+                    q: "Saat menyiapkan pesta ulang tahun teman (Aktivitas 2 hal. 18), langkah membagi pekerjaan menjadi tempat, dekorasi, konsumsi, dan hiburan merupakan penerapan ....",
+                    options: ["Dekomposisi", "Peretasan", "Virus komputer", "Penyimpanan awan"],
+                    ans: 0,
+                    explanation: "Membagi rencana pesta besar menjadi beberapa pos tugas kecil adalah contoh nyata dekomposisi (hal. 18)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 2 • Perubahan Cara Belajar",
+                    q: "Rani mencari materi pelajaran lewat video pembelajaran di tablet dan mendapatkan informasi cepat, sementara Dinda memakai buku ensiklopedia. Kelebihan teknologi digital pada situasi tersebut adalah ....",
+                    options: [
+                        "Akses informasi lebih cepat dan dapat menampilkan media interaktif seperti video",
+                        "Tidak memerlukan pemahaman membaca sama sekali",
+                        "Menggantikan seluruh peran guru di kelas",
+                        "Selalu bebas dari kebutuhan mengecek kebenaran informasi"
+                    ],
+                    ans: 0,
+                    explanation: "Teknologi digital memudahkan pencarian informasi lebih cepat serta menyajikan teks, gambar, suara, dan video (hal. 36 & 55)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 2 • Fungsi CPU & Perangkat",
+                    q: "Jika diibaratkan tubuh manusia (hal. 38), bagian komputer yang memproses semua informasi atau aktivitas ibarat ....",
+                    options: ["CPU (Central Processing Unit)", "Kabel mouse", "Kertas cetak", "Baki keyboard"],
+                    ans: 0,
+                    explanation: "CPU memproses semua informasi dan aktivitas komputer sebagaimana otak mengatur gerak dan kerja tubuh (hal. 38)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 2 • Alur IPO Mesin Cuci",
+                    q: "Pada contoh mesin cuci di materi hal. 41, pakaian kotor, deterjen, dan air termasuk ....",
+                    options: ["Input (masukan)", "Output (keluaran)", "Proses pencucian", "Hasil akhir"],
+                    ans: 0,
+                    explanation: "Baju kotor, deterjen, dan air adalah bahan masukan (input); mencuci/membilas/mengeringkan adalah proses; baju bersih kering adalah output (hal. 41)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 2 • Ancaman Peretasan & Cyberbullying",
+                    q: "Tindakan mengejek, menghina, mengancam, atau mempermalukan seseorang melalui media sosial disebut ....",
+                    options: ["Cyberbullying", "Dekomposisi", "Flowchart", "Input"],
+                    ans: 0,
+                    explanation: "Cyberbullying adalah perundungan atau pelecehan melalui internet/media sosial yang merugikan dan menyakiti korban (hal. 45-46)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 2 • Keamanan Akun & Perangkat Umum",
+                    q: "Setelah menggunakan komputer di perpustakaan atau perangkat umum, tindakan yang wajib dilakukan untuk menjaga keamanan akun adalah ....",
+                    options: [
+                        "Keluar dari akun (Log out) dan tidak membagikan kata sandi kepada siapa pun",
+                        "Membiarkan akun tetap terbuka agar orang lain mudah masuk",
+                        "Menuliskan kata sandi di papan tulis kelas",
+                        "Mengunduh aplikasi asing tanpa izin"
+                    ],
+                    ans: 0,
+                    explanation: "Pada Tips Menjaga Informasi Pribadi (hal. 47), kita perlu log out setelah memakai perangkat umum agar akun tidak diakses orang lain."
+                }
+            ],
+
+            // ---------------------------------------------------------------------
+            // MISI GALAKSI GAMMA (30 SOAL)
+            // ---------------------------------------------------------------------
+            C: [
+                // LEVEL 1 (No. 1 - 10)
+                {
+                    level: 1,
+                    topic: "Bab 1 • Pemecahan Masalah",
+                    q: "Mengetahui terlebih dahulu apa yang terjadi dan apa penyebab masalah membantu kita ....",
+                    options: [
+                        "Menentukan solusi yang lebih tepat dan tidak mudah panik",
+                        "Membuat masalah makin tidak jelas",
+                        "Menghindari tanggung jawab",
+                        "Melupakan tugas sekolah"
+                    ],
+                    ans: 0,
+                    explanation: "Memahami masalah dan penyebabnya membuat langkah penyelesaian lebih terarah, tepat, dan menenangkan (hal. 6-7)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Berpikir Komputasional",
+                    q: "Salah satu manfaat berpikir komputasional dalam kehidupan sehari-hari adalah ....",
+                    options: [
+                        "Membantu menyelesaikan masalah dengan lebih mudah dan terstruktur",
+                        "Membuat pekerjaan selalu lebih lambat",
+                        "Menghapus semua aturan",
+                        "Menjadikan keputusan selalu acak"
+                    ],
+                    ans: 0,
+                    explanation: "Berpikir komputasional membantu menyelesaikan masalah lebih mudah, mengambil keputusan baik, berpikir terstruktur, dan hemat waktu (hal. 9)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Dekomposisi",
+                    q: "Saat kamar sangat berantakan, membersihkannya sedikit demi sedikit (merapikan meja, menyapu, lalu menyusun buku) merupakan contoh ....",
+                    options: ["Dekomposisi", "Peretasan", "Malware", "Biner"],
+                    ans: 0,
+                    explanation: "Membagi pekerjaan merapikan kamar menjadi beberapa bagian kecil adalah contoh dekomposisi sehari-hari (hal. 9)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Pengenalan Pola",
+                    q: "Susunan nama bulan dari Januari sampai Desember yang polanya tetap setiap tahun merupakan contoh ....",
+                    options: ["Pengenalan pola", "Abstraksi", "Input", "Output"],
+                    ans: 0,
+                    explanation: "Urutan bulan dan hari yang berulang dengan susunan tetap termasuk contoh pengenalan pola (hal. 11)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Abstraksi",
+                    q: "Fokus pada informasi penting dan mengabaikan informasi yang tidak diperlukan adalah ciri utama dari ....",
+                    options: ["Abstraksi", "Algoritma", "Dekomposisi", "Cyberbullying"],
+                    ans: 0,
+                    explanation: "Abstraksi menyaring hal penting agar kita tidak bingung oleh informasi yang tidak relevan (hal. 9 & 12)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Algoritma",
+                    q: "Mengapa langkah-langkah dalam algoritma harus dilakukan secara berurutan?",
+                    options: [
+                        "Agar tujuan tercapai dengan benar dan tidak terjadi kesalahan urutan",
+                        "Agar langkahnya bisa dilewati sembarangan",
+                        "Karena urutan tidak memengaruhi hasil",
+                        "Agar proses menjadi tidak teratur"
+                    ],
+                    ans: 0,
+                    explanation: "Jika urutan langkah salah atau tidak berurutan, tujuan bisa gagal atau hasil tidak maksimal (hal. 13-15)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 1 • Pseudocode",
+                    q: "Pseudocode ditulis menggunakan bahasa yang mudah dimengerti agar ....",
+                    options: [
+                        "Mudah dipahami sebelum disusun menjadi program komputer",
+                        "Hanya bisa dibaca oleh satu mesin saja",
+                        "Menyembunyikan urutan langkah",
+                        "Mempersulit rencana kerja"
+                    ],
+                    ans: 0,
+                    explanation: "Pseudocode membantu merancang ide langkah logis dengan bahasa sederhana sebelum dibuat menjadi kode program (hal. 15)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 2 • Teknologi Digital",
+                    q: "Perangkat yang termasuk contoh teknologi digital berdasarkan materi Bab 2 adalah ....",
+                    options: ["Ponsel, komputer, dan smart TV", "Kartu pos dan surat", "Congklak dan papan tulis", "Arsip kertas di map"],
+                    ans: 0,
+                    explanation: "Ponsel, komputer, tablet, dan smart TV bekerja menggunakan sistem elektronik/digital (hal. 36-37)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 2 • Perangkat Keras",
+                    q: "Bagian komputer yang berfungsi menampilkan gambar dan teks kepada pengguna adalah ....",
+                    options: ["Monitor (layar)", "Mouse", "Keyboard", "Scanner"],
+                    ans: 0,
+                    explanation: "Layar atau monitor adalah perangkat keras tempat kita melihat tampilan teks, gambar, atau video (hal. 38)."
+                },
+                {
+                    level: 1,
+                    topic: "Bab 2 • Keamanan Informasi",
+                    q: "Contoh informasi pribadi yang tidak boleh dibagikan sembarangan di internet adalah ....",
+                    options: ["Kata sandi akun dan nomor telepon", "Warna kesukaan", "Hobi menggambar", "Makanan favorit"],
+                    ans: 0,
+                    explanation: "Kata sandi, nomor telepon, alamat rumah, nama sekolah, dan foto kartu pelajar adalah data pribadi sensitif (hal. 43-44)."
+                },
+
+                // LEVEL 2 (No. 11 - 20)
+                {
+                    level: 2,
+                    topic: "Bab 1 • Memahami Masalah",
+                    q: "Dita sering lupa membawa buku ke sekolah. Hal pertama yang sebaiknya dilakukan Dita agar masalah teratasi dengan tepat adalah ....",
+                    options: [
+                        "Mencari tahu penyebab masalahnya terlebih dahulu",
+                        "Menyalahkan cuaca pagi hari",
+                        "Membeli buku baru setiap hari",
+                        "Berhenti mencatat pelajaran"
+                    ],
+                    ans: 0,
+                    explanation: "Pada Asesmen Formatif Bab 1 hal. 31, memahami penyebab masalah adalah langkah awal untuk menemukan solusi yang tepat."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 1 • Pengenalan Pola",
+                    q: "Setiap kali Beni bermain gim terlalu lama pada malam hari, ia terlambat bangun pagi. Kebiasaan berulang yang disadari Beni menunjukkan ....",
+                    options: ["Pengenalan pola", "Abstraksi", "Peretasan", "Output"],
+                    ans: 0,
+                    explanation: "Beni mengenali hubungan kejadian yang berulang antara begadang bermain gim dan terlambat bangun pagi (hal. 11 & 31)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 1 • Pseudocode Wedang Uwuh",
+                    q: "Pada contoh pseudocode membuat wedang uwuh (hal. 16), setelah bahan direbus hingga harum dan warna berubah, langkah berikutnya adalah ....",
+                    options: [
+                        "Memasukkan gula batu dan mengaduk hingga larut",
+                        "Membuang seluruh air rebusan",
+                        "Menyimpan bahan mentah tanpa dimasak",
+                        "Langsung menutup program tanpa menyajikan"
+                    ],
+                    ans: 0,
+                    explanation: "Setelah merebus bahan hingga harum dan berubah warna, langkah selanjutnya adalah memasukkan gula batu lalu mengaduk hingga larut (hal. 16)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 1 • Algoritma Berkemah",
+                    q: "Pada langkah persiapan berkemah (Gambar 1.9 hal. 13), langkah terakhir sebelum berangkat adalah ....",
+                    options: [
+                        "Memeriksa kembali semua barang dan memastikan tidak ada yang tertinggal",
+                        "Mengacak-acak isi tenda",
+                        "Melupakan daftar perlengkapan",
+                        "Membiarkan tas terbuka di halaman"
+                    ],
+                    ans: 0,
+                    explanation: "Langkah terakhir adalah memeriksa kembali kelengkapan barang agar tidak ada yang tertinggal (hal. 13)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 1 • Koding & ScratchJr",
+                    q: "Di ScratchJr, setelah memilih karakter dan menyusun blok perintah gerakan, tombol yang ditekan untuk melihat gerakan karakter adalah ....",
+                    options: ["Tombol Play", "Tombol hapus data", "Tombol matikan layar", "Tombol cetak"],
+                    ans: 0,
+                    explanation: "Pada langkah penggunaan ScratchJr (hal. 30), tombol Play ditekan untuk menjalankan dan mengamati gerakan karakter."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 2 • Analog vs Digital",
+                    q: "Menyimpan data menggunakan penyimpanan cloud atau flashdisk termasuk teknologi ....",
+                    options: ["Digital", "Analog", "Kertas manual", "Surat pos"],
+                    ans: 0,
+                    explanation: "Pada Tabel 2.1 (hal. 37), penyimpanan cloud atau flashdisk adalah contoh teknologi digital, sedangkan arsip kertas di map adalah analog."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 2 • Perangkat Keras Utama",
+                    q: "Alat yang digunakan untuk menggerakkan kursor di layar komputer adalah ....",
+                    options: ["Mouse (tetikus)", "Printer", "Scanner", "Speaker"],
+                    ans: 0,
+                    explanation: "Mouse atau tetikus berfungsi menggerakkan kursor dan memilih perintah pada layar komputer (hal. 38)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 2 • Aplikasi Pengolah Kata & Konferensi",
+                    q: "Contoh aplikasi pengolah kata dan aplikasi video konferensi pada materi Bab 2 hal. 40 berturut-turut adalah ....",
+                    options: [
+                        "Microsoft Word/Google Docs dan Zoom/Google Meet",
+                        "Google Chrome dan Safari",
+                        "Windows dan Android",
+                        "Monitor dan keyboard"
+                    ],
+                    ans: 0,
+                    explanation: "Microsoft Word/Google Docs/LibreOffice Writer adalah aplikasi pengolah kata, sedangkan Zoom/Google Meet/Teams adalah video konferensi (hal. 40)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 2 • Konsep IPO",
+                    q: "Hasil akhir yang ditampilkan atau dihasilkan setelah proses dijalankan dalam sistem disebut ....",
+                    options: ["Output (keluaran)", "Input (masukan)", "Baterai", " Kabel daya"],
+                    ans: 0,
+                    explanation: "Output adalah hasil akhir setelah proses selesai dijalankan, seperti jus yang siap minum atau pesan yang terbaca (hal. 41-42)."
+                },
+                {
+                    level: 2,
+                    topic: "Bab 2 • Kata Sandi Kuat",
+                    q: "Berdasarkan Aktivitas 3 (hal. 48), ciri kata sandi yang kuat dan aman antara lain ....",
+                    options: [
+                        "Cukup panjang (minimal 8 karakter), memadukan huruf kapital/kecil, angka, dan simbol, serta tidak mudah ditebak",
+                        "Menggunakan tanggal lahir atau nama panggilan yang mudah ditebak semua orang",
+                        "Diberitahukan kepada teman sekelas agar mudah diingat",
+                        "Hanya satu huruf saja"
+                    ],
+                    ans: 0,
+                    explanation: "Kata sandi yang kuat menggabungkan huruf besar, huruf kecil, angka, dan simbol serta tidak dibagikan kepada orang lain (hal. 47-48)."
+                },
+
+                // LEVEL 3 (No. 21 - 30)
+                {
+                    level: 3,
+                    topic: "Bab 1 • Penyebab Utama Masalah",
+                    q: "Aldi sering terlambat masuk sekolah karena bangun kesiangan, sehingga terburu-buru dan sering lupa membawa buku. Penyebab utama dari rangkaian masalah tersebut adalah ....",
+                    options: [
+                        "Aldi bangun kesiangan",
+                        "Guru datang terlalu pagi",
+                        "Teman-teman datang lebih cepat",
+                        "Pintu kelas selalu terbuka"
+                    ],
+                    ans: 0,
+                    explanation: "Seperti pada soal Asesmen Formatif hal. 31, bangun kesiangan memicu terburu-buru dan lupa membawa buku."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 1 • Abstraksi Perjalanan",
+                    q: "Saat mencari jalan menuju Pantai Glagah, Ayu hanya memperhatikan arah jalan dan papan petunjuk tanpa memikirkan warna rumah di sepanjang jalan. Peristiwa tersebut mencerminkan ....",
+                    options: ["Abstraksi", "Dekomposisi", "Pengenalan pola", "Peretasan akun"],
+                    ans: 0,
+                    explanation: "Memfokuskan perhatian pada petunjuk jalan dan mengabaikan warna rumah adalah contoh abstraksi (hal. 12 & 59)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 1 • Analisis Kasus Siti",
+                    q: "Siti sering panik saat berangkat karena perlengkapan sekolahnya banyak yang tertinggal akibat tidak pernah memeriksa isi tas sebelum tidur. Cara paling tepat untuk mengatasinya adalah ....",
+                    options: [
+                        "Membiasakan mengecek jadwal dan perlengkapan tas pada malam hari sebelum tidur",
+                        "Menyalahkan tas sekolah yang terlalu kecil",
+                        "Tidak membawa buku sama sekali ke sekolah",
+                        "Berangkat sekolah tanpa memeriksa perlengkapan"
+                    ],
+                    ans: 0,
+                    explanation: "Memeriksa tas sesuai jadwal sebelum tidur mencegah barang tertinggal dan mengurangi kepanikan di pagi hari (hal. 13 & 33)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 1 • Dampak Instruksi Tidak Terurut",
+                    q: "Edo membantu membuat nasi goreng, tetapi petunjuk temannya kurang jelas dan tidak urut sehingga bumbu tertukar dan rasanya terlalu asin. Hal ini menunjukkan bahwa ....",
+                    options: [
+                        "Instruksi yang tidak jelas dan tidak berurutan berdampak buruk pada hasil pekerjaan",
+                        "Bumbu tidak perlu ditakar saat memasak",
+                        "Petunjuk tidak diperlukan dalam kegiatan praktik",
+                        "Hasil masakan selalu sama meski langkahnya acak"
+                    ],
+                    ans: 0,
+                    explanation: "Pada soal hal. 32, instruksi yang tidak jelas dan tidak urut menyebabkan kesalahan langkah dan hasil yang tidak sesuai."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 1 • Menyusun Solusi Komputasional",
+                    q: "Ketika menghadapi masalah yang berulang setiap hari, langkah paling bijak setelah mengetahui penyebabnya adalah ....",
+                    options: [
+                        "Merancang solusi logis, menerapkannya secara konsisten, lalu mengevaluasi hasilnya",
+                        "Mengabaikan masalah sampai menimbulkan kerugian lebih besar",
+                        "Meniru tindakan yang justru memperparah keadaan",
+                        "Menyerah sebelum mencoba"
+                    ],
+                    ans: 0,
+                    explanation: "Pemecahan masalah yang baik meliputi mengenali masalah, mencari penyebab, menyusun & menerapkan solusi, serta mengevaluasi hasilnya (hal. 8)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 2 • Radio vs Ponsel Digital",
+                    q: "Mengapa ponsel digital memungkinkan kita memilih lagu sendiri dan membuat daftar putar, sedangkan radio hanya memutar siaran yang sedang disiarkan?",
+                    options: [
+                        "Ponsel menggunakan teknologi digital dan internet/penyimpanan data, sedangkan radio menerima siaran gelombang radio",
+                        "Radio tidak memiliki komponen elektronik sama sekali",
+                        "Ponsel tidak dapat memutar suara",
+                        "Siaran radio selalu berupa teks tertulis"
+                    ],
+                    ans: 0,
+                    explanation: "Radio memutar siaran gelombang radio yang sedang dipancarkan, sedangkan ponsel digital memungkinkan pemilihan lagu dan pembuatan playlist (hal. 35-36)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 2 • Dampak Ketidaklengkapan Sistem",
+                    q: "Jika salah satu bagian penting tidak ada atau tidak berfungsi dengan baik pada sistem komputer (misalnya perangkat lunak tidak ada), maka ....",
+                    options: [
+                        "Perangkat digital tidak dapat menjalankan fungsinya dengan baik",
+                        "Komputer tetap berjalan normal tanpa kendala",
+                        "Semua data otomatis tersimpan di udara",
+                        "Monitor berubah menjadi keyboard"
+                    ],
+                    ans: 0,
+                    explanation: "Perangkat keras dan perangkat lunak saling bergantung; jika salah satunya tidak ada, fungsi perangkat terganggu (hal. 42 & 53)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 2 • Alur IPO Koding",
+                    q: "Pada contoh alur IPO dalam koding (Gambar 2.8 hal. 41), menekan tombol 'Start' dan aplikasi menjalankan perintah hingga karakter bergerak ke kanan berturut-turut adalah ....",
+                    options: [
+                        "Input (menekan Start) -> Proses (aplikasi menjalankan perintah) -> Output (karakter bergerak)",
+                        "Output (karakter diam) -> Proses (mematikan komputer) -> Input (mencabut kabel)",
+                        "Proses (menghapus game) -> Input (menutup layar) -> Output (muncul suara)",
+                        "Input (mengetik nama) -> Output (mengunduh file) -> Proses (menekan tombol)"
+                    ],
+                    ans: 0,
+                    explanation: "Aksi pengguna menekan tombol adalah Input, program mengolah instruksi adalah Proses, dan gerakan karakter di layar adalah Output (hal. 41)."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 2 • Kebocoran Data & Penipuan",
+                    q: "Jika informasi sensitif seperti NIK, alamat rumah, email, atau tanggal lahir bocor dan disalahgunakan, dampak yang dapat terjadi adalah ....",
+                    options: [
+                        "Data dapat dipakai pihak tidak bertanggung jawab untuk penipuan atau pendaftaran/transaksi tanpa izin",
+                        "Kecepatan internet di rumah menjadi lebih tinggi",
+                        "Akun media sosial otomatis menjadi milik umum secara sah",
+                        "Perangkat menjadi kebal terhadap segala ancaman"
+                    ],
+                    ans: 0,
+                    explanation: "Pada materi investigasi kebocoran data (hal. 49), data sensitif yang bocor berisiko disalahgunakan untuk penipuan atau tindakan merugikan."
+                },
+                {
+                    level: 3,
+                    topic: "Bab 2 • Sikap Bijak Berinternet",
+                    q: "Berikut ini yang merupakan kombinasi sikap aman dan beretika saat menggunakan teknologi digital adalah ....",
+                    options: [
+                        "Menjaga kerahasiaan kata sandi/OTP, tidak mengklik tautan mencurigakan, dan berkomunikasi dengan sopan",
+                        "Membagikan kode OTP ke teman, mengklik semua tautan hadiah, dan mengejek di kolom komentar",
+                        "Mengunggah alamat rumah dan jadwal liburan keluarga secara terbuka",
+                        "Menyebarkan foto pribadi teman tanpa izin"
+                    ],
+                    ans: 0,
+                    explanation: "Menjaga rahasia akun/OTP, waspada terhadap tautan/orang asing, dan beretika sopan adalah kunci aman berinternet (hal. 46-47)."
+                }
+            ]
+        };
+
+        // =========================================================================
+        // STATE APLIKASI & ALGORITMA PENGACAKAN MISI OTOMATIS
+        // =========================================================================
+        const state = {
+            studentName: "",
+            studentAbsen: "",
+            selectedPaket: null, // 'A', 'B', atau 'C'
+            cardOrder: ['A', 'B', 'C'],
+            currentQuestionIndex: 0,
+            userAnswers: Array(30).fill(null),
+            flaggedQuestions: Array(30).fill(false),
+            reviewFilter: 'all',
+            shuffleTimer: null,
+            revealTimer: null
+        };
+
+        /**
+         * Mengacak urutan array menggunakan algoritma Fisher-Yates.
+         */
+        function shuffleArray(arr) {
+            const copy = [...arr];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        function showScreen(screenId) {
+            ['screen-login', 'screen-draw', 'screen-quiz', 'screen-result'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: window.matchMedia('(max-width: 639px)').matches ? 'auto' : 'smooth' });
+        }
+
+        function clearDrawTimers() {
+            if (state.shuffleTimer) {
+                clearInterval(state.shuffleTimer);
+                state.shuffleTimer = null;
+            }
+            if (state.revealTimer) {
+                clearTimeout(state.revealTimer);
+                state.revealTimer = null;
+            }
+        }
+
+        // Tangani submit form masuk siswa -> langsung masuk ke halaman pengacakan otomatis
+        document.getElementById('login-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const namaInput = document.getElementById('input-nama').value.trim();
+            const absenInput = document.getElementById('input-absen').value.trim();
+            const errorBox = document.getElementById('login-error');
+            const errorText = document.getElementById('login-error-text');
+
+            if (!namaInput || namaInput.length < 2) {
+                errorText.textContent = "Harap masukkan Nama Lengkap siswa terlebih dahulu.";
+                errorBox.classList.remove('hidden');
+                return;
+            }
+
+            const absenNum = parseInt(absenInput, 10);
+            if (!absenInput || isNaN(absenNum) || absenNum < 1) {
+                errorText.textContent = "Harap masukkan Nomor Absen yang valid (minimal 1).";
+                errorBox.classList.remove('hidden');
+                return;
+            }
+
+            errorBox.classList.add('hidden');
+            state.studentName = namaInput;
+            state.studentAbsen = String(absenNum).padStart(2, '0');
+
+            document.getElementById('header-student-info').classList.remove('hidden');
+            document.getElementById('header-student-info').classList.add('flex');
+            document.getElementById('nav-student-name').textContent = state.studentName;
+            document.getElementById('nav-student-absen').textContent = `Absen: ${state.studentAbsen}`;
+            document.getElementById('nav-paket-badge').classList.add('hidden');
+
+            prepareAutomaticMissionDraw();
+            showScreen('screen-draw');
+        });
+
+        /**
+         * Menjalankan animasi kartu misi bergerak/berputar otomatis tanpa perlu diklik,
+         * lalu mengunci misi yang wajib dikerjakan siswa.
+         */
+        function prepareAutomaticMissionDraw() {
+            clearDrawTimers();
+
+            document.getElementById('draw-student-name').textContent = state.studentName;
+            document.getElementById('draw-student-absen').textContent = state.studentAbsen;
+
+            state.cardOrder = shuffleArray(['A', 'B', 'C']);
+            const paketKeys = ['A', 'B', 'C'];
+            state.selectedPaket = paketKeys[Math.floor(Math.random() * paketKeys.length)];
+
+            document.getElementById('draw-status-pill').className = "inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/15 border border-cyan-500/40 text-cyan-300 text-xs font-mono mb-4";
+            document.getElementById('draw-status-text').innerHTML = `<i class="fa-solid fa-satellite-dish fa-spin mr-1"></i>Mengacak Misi Astronot Otomatis...`;
+            document.getElementById('draw-instruction').textContent = "Kartu misi sedang diacak otomatis oleh sistem kokpit. Harap tunggu hingga misi orbitmu terkunci...";
+
+            document.getElementById('shuffling-indicator').classList.remove('hidden');
+            document.getElementById('draw-result-box').classList.add('hidden');
+            document.getElementById('draw-result-box').classList.remove('flex');
+
+            const subtexts = [
+                "Memindai jalur koordinat algoritma & dekomposisi...",
+                "Menyelaraskan perisai keamanan informasi digital...",
+                "Mengunci misi wajib untuk astronot..."
+            ];
+
+            for (let i = 0; i < 3; i++) {
+                const slot = document.getElementById(`card-slot-${i}`);
+                slot.classList.remove('card-flipped', 'opacity-45', 'scale-95', 'ring-4', 'ring-emerald-400', 'rounded-3xl');
+                slot.classList.add(`shuffle-slot-${i}`);
+
+                const paketCode = state.cardOrder[i];
+                const meta = MISSION_META[paketCode];
+                const backEl = document.getElementById(`card-back-${i}`);
+                backEl.innerHTML = `
+                    <span class="px-3 py-1 rounded-full text-xs font-mono font-bold border ${meta.badgeClass} mb-3">
+                        ${meta.code}
+                    </span>
+                    <div class="w-12 h-12 rounded-2xl bg-slate-900/80 border border-white/15 flex items-center justify-center mb-3 ${meta.textClass}">
+                        <i class="fa-solid ${meta.icon} text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-extrabold text-white">${meta.title}</h4>
+                    <p class="text-xs text-slate-300 mt-2 leading-relaxed">${meta.subtitle}</p>
+                    <div class="mt-4 pt-3 border-t border-white/10 w-full text-[11px] font-mono ${meta.textClass}">
+                        30 Tantangan • Level 1–3 Merata
+                    </div>
+                `;
+            }
+
+            // Animasi dibuat singkat dan tidak bergantung pada interval panjang,
+            // agar tetap responsif pada HP/perangkat dengan performa terbatas.
+            let step = 0;
+            const totalSteps = 5;
+            const progressBar = document.getElementById('shuffle-progress-bar');
+            const subtextEl = document.getElementById('shuffling-subtext');
+            progressBar.style.width = '8%';
+
+            state.shuffleTimer = setInterval(() => {
+                step++;
+                const pct = Math.min(95, Math.round((step / totalSteps) * 95));
+                progressBar.style.width = `${pct}%`;
+                subtextEl.textContent = subtexts[step % subtexts.length];
+
+                if (step >= totalSteps) {
+                    clearInterval(state.shuffleTimer);
+                    state.shuffleTimer = null;
+                    progressBar.style.width = '100%';
+                    revealSelectedMissionCard();
+                }
+            }, 200);
+        }
+
+        function revealSelectedMissionCard() {
+            const chosenPaket = state.selectedPaket;
+            const chosenMeta = MISSION_META[chosenPaket];
+
+            for (let i = 0; i < 3; i++) {
+                const slot = document.getElementById(`card-slot-${i}`);
+                slot.classList.remove(`shuffle-slot-${i}`);
+            }
+
+            state.revealTimer = setTimeout(() => {
+                let chosenSlotIndex = 0;
+                for (let i = 0; i < 3; i++) {
+                    const slot = document.getElementById(`card-slot-${i}`);
+                    slot.classList.add('card-flipped');
+                    if (state.cardOrder[i] === chosenPaket) {
+                        chosenSlotIndex = i;
+                    }
+                }
+
+                for (let i = 0; i < 3; i++) {
+                    const slot = document.getElementById(`card-slot-${i}`);
+                    if (i === chosenSlotIndex) {
+                        slot.classList.add('ring-4', 'ring-emerald-400', 'rounded-3xl', 'scale-105');
+                        slot.classList.remove('opacity-45', 'scale-95');
+                    } else {
+                        slot.classList.add('opacity-45', 'scale-95');
+                        slot.classList.remove('ring-4', 'ring-emerald-400', 'scale-105');
+                    }
+                }
+
+                document.getElementById('shuffling-indicator').classList.add('hidden');
+                const resultBox = document.getElementById('draw-result-box');
+                resultBox.classList.remove('hidden');
+                resultBox.classList.add('flex');
+
+                document.getElementById('locked-paket-label').textContent = `${chosenMeta.code} (${chosenMeta.title})`;
+                document.getElementById('btn-start-quiz-text').textContent = `Mulai ${chosenMeta.code}`;
+                document.getElementById('draw-status-pill').className = "inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/50 text-emerald-300 text-xs font-mono mb-4";
+                document.getElementById('draw-status-text').innerHTML = `<i class="fa-solid fa-check-circle mr-1"></i>${chosenMeta.code} Terkunci!`;
+                document.getElementById('draw-instruction').textContent = `Sistem telah menetapkan ${chosenMeta.code} - ${chosenMeta.title} sebagai misi wajibmu.`;
+            }, 350);
+        }
+
+        // =========================================================================
+        // LOGIKA PENGERJAAN MISI (30 SOAL)
+        // =========================================================================
+        function startQuiz() {
+            if (!state.selectedPaket) return;
+            const meta = MISSION_META[state.selectedPaket];
+
+            state.currentQuestionIndex = 0;
+            state.userAnswers = Array(30).fill(null);
+            state.flaggedQuestions = Array(30).fill(false);
+
+            const badge = document.getElementById('nav-paket-badge');
+            badge.textContent = meta.code;
+            badge.classList.remove('hidden');
+
+            document.getElementById('quiz-paket-tag').textContent = `${meta.code} • ${meta.title.toUpperCase()}`;
+
+            renderQuestionGrid();
+            renderQuestion(0);
+            showScreen('screen-quiz');
+        }
+
+        function getLevelBadgeInfo(level) {
+            if (level === 1) {
+                return {
+                    text: "Level 1 • Dasar",
+                    cls: "px-3 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-mono text-xs font-semibold"
+                };
+            }
+            if (level === 2) {
+                return {
+                    text: "Level 2 • Terapan",
+                    cls: "px-3 py-1 rounded-lg bg-amber-500/15 border border-amber-500/40 text-amber-300 font-mono text-xs font-semibold"
+                };
+            }
+            return {
+                text: "Level 3 • Analisis",
+                cls: "px-3 py-1 rounded-lg bg-rose-500/15 border border-rose-500/40 text-rose-300 font-mono text-xs font-semibold"
+            };
+        }
+
+        function renderQuestion(index) {
+            const questions = QUIZ_BANK[state.selectedPaket];
+            const q = questions[index];
+            state.currentQuestionIndex = index;
+
+            document.getElementById('quiz-current-num').textContent = index + 1;
+            document.getElementById('quiz-progress-bar').style.width = `${((index + 1) / 30) * 100}%`;
+
+            const lvlInfo = getLevelBadgeInfo(q.level);
+            const lvlBadge = document.getElementById('quiz-level-badge');
+            lvlBadge.textContent = lvlInfo.text;
+            lvlBadge.className = lvlInfo.cls;
+
+            document.getElementById('question-topic-badge').innerHTML = `<i class="fa-solid fa-bookmark text-cyan-400 mr-1.5"></i>${q.topic}`;
+            document.getElementById('question-number-pill').textContent = index + 1;
+            document.getElementById('question-text').textContent = q.q;
+
+            const flagBtn = document.getElementById('btn-flag');
+            const flagText = document.getElementById('btn-flag-text');
+            if (state.flaggedQuestions[index]) {
+                flagBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold border border-amber-400 bg-amber-500/20 text-amber-300 transition-all flex items-center gap-1.5 cursor-pointer";
+                flagText.textContent = "Ditandai Ragu-ragu";
+            } else {
+                flagBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-700 bg-slate-900/80 text-slate-300 hover:border-amber-400/60 hover:text-amber-300 transition-all flex items-center gap-1.5 cursor-pointer";
+                flagText.textContent = "Tandai Ragu-ragu";
+            }
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((optText, optIdx) => {
+                const isSelected = state.userAnswers[index] === optIdx;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => selectAnswer(index, optIdx);
+                btn.className = isSelected
+                    ? "w-full text-left p-4 rounded-2xl border-2 border-cyan-400 bg-cyan-500/15 text-white transition-all flex items-center gap-3.5 shadow-md shadow-cyan-500/10 cursor-pointer"
+                    : "w-full text-left p-4 rounded-2xl border border-slate-700/80 bg-slate-900/65 hover:bg-slate-800/80 hover:border-slate-500 text-slate-200 transition-all flex items-center gap-3.5 cursor-pointer";
+
+                btn.innerHTML = `
+                    <span class="flex-shrink-0 w-8 h-8 rounded-xl font-mono font-bold text-xs flex items-center justify-center ${isSelected ? 'bg-cyan-400 text-slate-950' : 'bg-slate-800 text-slate-300 border border-slate-700'}">
+                        ${letters[optIdx]}
+                    </span>
+                    <span class="text-sm sm:text-base font-medium leading-snug">${optText}</span>
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('btn-prev').disabled = (index === 0);
+            const btnNext = document.getElementById('btn-next');
+            const btnSubmit = document.getElementById('btn-submit-quiz');
+
+            if (index === 29) {
+                btnNext.classList.add('hidden');
+                btnSubmit.classList.remove('hidden');
+            } else {
+                btnNext.classList.remove('hidden');
+                btnSubmit.classList.add('hidden');
+            }
+
+            updateAnsweredCounter();
+            highlightCurrentNavButton();
+        }
+
+        function selectAnswer(qIndex, optIdx) {
+            state.userAnswers[qIndex] = optIdx;
+            renderQuestion(qIndex);
+            renderQuestionGrid();
+        }
+
+        function toggleFlag() {
+            const idx = state.currentQuestionIndex;
+            state.flaggedQuestions[idx] = !state.flaggedQuestions[idx];
+            renderQuestion(idx);
+            renderQuestionGrid();
+        }
+
+        function prevQuestion() {
+            if (state.currentQuestionIndex > 0) {
+                renderQuestion(state.currentQuestionIndex - 1);
+            }
+        }
+
+        function nextQuestion() {
+            if (state.currentQuestionIndex < 29) {
+                renderQuestion(state.currentQuestionIndex + 1);
+            }
+        }
+
+        function updateAnsweredCounter() {
+            const count = state.userAnswers.filter(a => a !== null).length;
+            document.getElementById('quiz-answered-count').textContent = count;
+        }
+
+        function renderQuestionGrid() {
+            const grid = document.getElementById('question-nav-grid');
+            grid.innerHTML = '';
+
+            for (let i = 0; i < 30; i++) {
+                const isAnswered = state.userAnswers[i] !== null;
+                const isFlagged = state.flaggedQuestions[i];
+                const isCurrent = state.currentQuestionIndex === i;
+
+                let cls = "h-9 rounded-xl font-mono text-xs font-bold transition-all flex items-center justify-center cursor-pointer ";
+                if (isFlagged) {
+                    cls += "bg-amber-500 text-slate-950 ";
+                } else if (isAnswered) {
+                    cls += "bg-cyan-500 text-slate-950 ";
+                } else {
+                    cls += "bg-slate-800 text-slate-300 border border-slate-700 hover:border-slate-500 ";
+                }
+
+                if (isCurrent) {
+                    cls += "ring-2 ring-white scale-105";
+                }
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = i + 1;
+                btn.className = cls;
+                btn.onclick = () => renderQuestion(i);
+                grid.appendChild(btn);
+            }
+        }
+
+        function highlightCurrentNavButton() {
+            renderQuestionGrid();
+        }
+
+        // =========================================================================
+        // KONFIRMASI & PERHITUNGAN HASIL AKHIR
+        // =========================================================================
+        function confirmSubmitQuiz() {
+            const answeredCount = state.userAnswers.filter(a => a !== null).length;
+            const unansweredCount = 30 - answeredCount;
+            const modalTitle = document.getElementById('modal-title');
+            const modalMsg = document.getElementById('modal-message');
+
+            modalTitle.textContent = "Konfirmasi Penyelesaian Misi";
+            if (unansweredCount > 0) {
+                modalMsg.innerHTML = `Masih ada <strong class="text-amber-400">${unansweredCount} tantangan</strong> yang belum kamu jawab (terjawab ${answeredCount} dari 30 tantangan). Apakah kamu tetap yakin ingin menyelesaikan misi sekarang?`;
+            } else {
+                modalMsg.innerHTML = `Seluruh <strong class="text-emerald-400">30 tantangan</strong> sudah terjawab. Apakah kamu yakin ingin menyelesaikan misi dan melihat hasil nilaimu?`;
+            }
+
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+
+        function finalizeQuiz() {
+            closeModal();
+            const questions = QUIZ_BANK[state.selectedPaket];
+            const meta = MISSION_META[state.selectedPaket];
+
+            let totalCorrect = 0;
+            let lvlCorrect = { 1: 0, 2: 0, 3: 0 };
+            let lvlTotal = { 1: 10, 2: 10, 3: 10 };
+
+            questions.forEach((q, idx) => {
+                if (state.userAnswers[idx] === q.ans) {
+                    totalCorrect++;
+                    lvlCorrect[q.level]++;
+                }
+            });
+
+            const totalWrong = 30 - totalCorrect;
+            const finalScore = Math.round((totalCorrect / 30) * 100);
+
+            document.getElementById('res-name').textContent = state.studentName;
+            document.getElementById('res-absen').textContent = state.studentAbsen;
+            document.getElementById('res-paket').textContent = `${meta.code} - ${meta.title}`;
+            document.getElementById('res-score').textContent = finalScore;
+            document.getElementById('res-correct').textContent = totalCorrect;
+            document.getElementById('res-wrong').textContent = totalWrong;
+
+            const predicateEl = document.getElementById('res-predicate');
+            const badgeIcon = document.getElementById('result-badge-icon');
+            if (finalScore >= 85) {
+                predicateEl.textContent = "Komandan Astronot Terbaik (Sangat Baik)";
+                predicateEl.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                badgeIcon.className = "inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 mb-4 shadow-lg";
+                badgeIcon.innerHTML = `<i class="fa-solid fa-trophy text-4xl"></i>`;
+            } else if (finalScore >= 70) {
+                predicateEl.textContent = "Penjelajah Handal (Baik)";
+                predicateEl.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30";
+                badgeIcon.className = "inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-cyan-500/15 border border-cyan-500/40 text-cyan-400 mb-4 shadow-lg";
+                badgeIcon.innerHTML = `<i class="fa-solid fa-award text-4xl"></i>`;
+            } else {
+                predicateEl.textContent = "Kadet Berproses (Perlu Latihan Ulang Materi)";
+                predicateEl.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
+                badgeIcon.className = "inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-amber-500/15 border border-amber-500/40 text-amber-400 mb-4 shadow-lg";
+                badgeIcon.innerHTML = `<i class="fa-solid fa-book-open-reader text-4xl"></i>`;
+            }
+
+            [1, 2, 3].forEach(lvl => {
+                const c = lvlCorrect[lvl];
+                const t = lvlTotal[lvl];
+                const pct = Math.round((c / t) * 100);
+                document.getElementById(`res-lvl${lvl}-text`).textContent = `${c}/${t}`;
+                document.getElementById(`res-lvl${lvl}-pct`).textContent = `${pct}%`;
+                document.getElementById(`res-lvl${lvl}-bar`).style.width = `${pct}%`;
+            });
+
+            state.reviewFilter = 'all';
+            document.getElementById('review-section').classList.add('hidden');
+            renderReviewList();
+            showScreen('screen-result');
+        }
+
+        // =========================================================================
+        // REVIEW JAWABAN & PEMBAHASAN + UNDUH LAPORAN HASIL NILAI
+        // =========================================================================
+        function toggleReviewSection() {
+            const section = document.getElementById('review-section');
+            section.classList.toggle('hidden');
+            if (!section.classList.contains('hidden')) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function downloadResultReport() {
+            try {
+                const questions = QUIZ_BANK[state.selectedPaket] || [];
+                const meta = MISSION_META[state.selectedPaket] || { code: "MISI", title: "KKA" };
+                const letters = ['A', 'B', 'C', 'D'];
+
+                let totalCorrect = 0;
+                let lvlCorrect = { 1: 0, 2: 0, 3: 0 };
+
+                questions.forEach((q, idx) => {
+                    if (state.userAnswers[idx] === q.ans) {
+                        totalCorrect++;
+                        lvlCorrect[q.level]++;
+                    }
+                });
+
+                const totalWrong = 30 - totalCorrect;
+                const finalScore = Math.round((totalCorrect / 30) * 100);
+                const predicate = document.getElementById('res-predicate').textContent.trim();
+                const timestamp = new Date().toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' });
+
+                let detailLines = questions.map((q, idx) => {
+                    const uAns = state.userAnswers[idx];
+                    const isRight = uAns === q.ans;
+                    const uLabel = uAns !== null ? `${letters[uAns]}. ${q.options[uAns]}` : "Tidak Dijawab";
+                    const cLabel = `${letters[q.ans]}. ${q.options[q.ans]}`;
+                    return [
+                        `No. ${String(idx + 1).padStart(2, '0')} [Level ${q.level} | ${q.topic}] - ${isRight ? "BENAR" : "SALAH"}`,
+                        `  Soal           : ${q.q.replace(/\n/g, ' ')}`,
+                        `  Jawaban Siswa  : ${uLabel}`,
+                        `  Kunci Jawaban  : ${cLabel}`
+                    ].join('\n');
+                }).join('\n\n');
+
+                const reportContent = [
+                    "======================================================================",
+                    "LAPORAN HASIL NILAI - ASESMEN DIGITAL KKA KELAS 5 (TEMA ASTRONOT)",
+                    "======================================================================",
+                    `Nama Astronot  : ${state.studentName}`,
+                    `Nomor Absen    : ${state.studentAbsen}`,
+                    `Misi Ditugaskan: ${meta.code} - ${meta.title}`,
+                    `Waktu Selesai  : ${timestamp}`,
+                    "----------------------------------------------------------------------",
+                    `SKOR AKHIR     : ${finalScore} / 100 (${predicate})`,
+                    `Jawaban Benar  : ${totalCorrect} dari 30 soal`,
+                    `Jawaban Salah  : ${totalWrong} dari 30 soal`,
+                    `Level 1 Dasar  : ${lvlCorrect[1]}/10 (${Math.round((lvlCorrect[1] / 10) * 100)}%)`,
+                    `Level 2 Terapan: ${lvlCorrect[2]}/10 (${Math.round((lvlCorrect[2] / 10) * 100)}%)`,
+                    `Level 3 Analis.: ${lvlCorrect[3]}/10 (${Math.round((lvlCorrect[3] / 10) * 100)}%)`,
+                    "======================================================================",
+                    "RINCIAN JAWABAN PER SOAL",
+                    "======================================================================",
+                    detailLines
+                ].join('\n');
+
+                const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const cleanName = (state.studentName || 'Siswa').toLowerCase().replace(/[^a-z0-9]+/g, '_');
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `Hasil_Nilai_KKA_Absen_${state.studentAbsen}_${cleanName}.txt`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+            } catch (err) {
+                document.getElementById('modal-title').textContent = "Unduhan Gagal";
+                document.getElementById('modal-message').textContent = "Terjadi kendala saat menyiapkan berkas hasil nilai. Silakan coba kembali.";
+                document.getElementById('custom-modal').classList.remove('hidden');
+            }
+        }
+
+        function filterReview(type) {
+            state.reviewFilter = type;
+            renderReviewList();
+        }
+
+        function renderReviewList() {
+            const listEl = document.getElementById('review-list');
+            listEl.innerHTML = '';
+            const questions = QUIZ_BANK[state.selectedPaket];
+            const letters = ['A', 'B', 'C', 'D'];
+
+            questions.forEach((q, idx) => {
+                const userAns = state.userAnswers[idx];
+                const isCorrect = userAns === q.ans;
+
+                if (state.reviewFilter === 'wrong' && isCorrect) return;
+
+                const card = document.createElement('div');
+                card.className = isCorrect
+                    ? "p-5 rounded-2xl bg-slate-900/80 border border-emerald-500/30 space-y-3"
+                    : "p-5 rounded-2xl bg-slate-900/80 border border-rose-500/40 space-y-3";
+
+                const statusBadge = isCorrect
+                    ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-emerald-500/20 text-emerald-300"><i class="fa-solid fa-check mr-1"></i>BENAR</span>`
+                    : `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-rose-500/20 text-rose-300"><i class="fa-solid fa-xmark mr-1"></i>SALAH</span>`;
+
+                const userAnswerText = userAns !== null
+                    ? `${letters[userAns]}. ${q.options[userAns]}`
+                    : `<em class="text-slate-500">Tidak dijawab</em>`;
+
+                const correctAnswerText = `${letters[q.ans]}. ${q.options[q.ans]}`;
+
+                card.innerHTML = `
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="font-mono text-xs font-bold px-2.5 py-1 rounded-lg bg-slate-800 text-cyan-300">No. ${idx + 1}</span>
+                            <span class="font-mono text-[11px] text-slate-400">Level ${q.level} • ${q.topic}</span>
+                        </div>
+                        ${statusBadge}
+                    </div>
+                    <p class="text-sm sm:text-base font-semibold text-white whitespace-pre-line">${q.q}</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm pt-1">
+                        <div class="p-3 rounded-xl ${isCorrect ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-200' : 'bg-rose-500/10 border border-rose-500/30 text-rose-200'}">
+                            <span class="block text-[10px] font-mono uppercase opacity-75 mb-0.5">Jawaban Kamu:</span>
+                            <strong>${userAnswerText}</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-200">
+                            <span class="block text-[10px] font-mono uppercase opacity-75 mb-0.5">Kunci Jawaban Benar:</span>
+                            <strong>${correctAnswerText}</strong>
+                        </div>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-950/70 border border-slate-800 text-xs text-slate-300 leading-relaxed">
+                        <strong class="text-cyan-400"><i class="fa-solid fa-lightbulb mr-1"></i>Pembahasan:</strong> ${q.explanation}
+                    </div>
+                `;
+                listEl.appendChild(card);
+            });
+
+            if (listEl.innerHTML === '') {
+                listEl.innerHTML = `<div class="text-center py-8 text-emerald-400 font-semibold text-sm"><i class="fa-solid fa-star mr-2"></i>Luar biasa! Tidak ada jawaban yang salah.</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
